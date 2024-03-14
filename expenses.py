@@ -1,5 +1,4 @@
 import datetime
-
 from currency import CoinType
 from categories import Categories
 from builtins import NotImplementedError
@@ -17,11 +16,11 @@ class Expense(object):
         raise NotImplementedError("This method should be implemented in a subclass")
         
 class BankExpense(Expense):
-    def __init__(self, date: datetime.datetime, company: str, expense: float):
+    def __init__(self, date: datetime.datetime, company: str, category: Categories, expense: float):
         self.date = date
         self.company = company
         self.expense = expense
-        self.category = self.get_category(company)
+        self.category = category
     
     def __str__(self):
         return ("Bank Expense:\n"
@@ -32,7 +31,7 @@ class BankExpense(Expense):
                 "  category = {4}\n"
                 .format(self.date, self.date.month, self.company, self.expense, self.category)) 
     
-    def get_category(self, company: str) -> Categories:
+    def get_category(self) -> Categories:
         return self.category
     def get_transaction_date(self) -> datetime.datetime:
         return self.date
