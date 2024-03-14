@@ -33,14 +33,18 @@ class Categories(Enum):
     HOME_RELATED = auto()
     FUN_AND_MOVIES = auto()
     MISC = auto()
+    INCOMING_TRANSFERS = auto()
+    SALARIES = auto()
+    BANK_TRANSFERS_AND_MONEY_TRANSFERS = auto()
     UNKNOWN = auto()
 
 # Categorizations - list of tuples, each tuple contains a category and a list of strings that are the names of the expenses that belong to this category
 Categorizations = [
-            (Categories.BANK_AMLOT, ['11 שי ץורע.למע','טנרטניא תויושר','טנרטניא תויושר','31 שי ץורע.למע','טנרטניא-הינק','טנרטניא-הרמה','41 שי ץורע.למע','91 שי ץורע.למע','546ורש אובי.מע','9 שי ץורע.למע','007יגיד הרבעה','01 שי ץורע.למע','007טניא .עה','7 שי ץורע.למע','טנרטניא הרמה','546 ח"טמ תרבעה',"007טנרטניא .עה", "696הדקפה/הרבעה","21 שי ץורע.למע",'ע"ינ לוהינ ימד', '546טמ תרבעה.מע' ]),
-            (Categories.VISA,['מקס'] ),
-
-
+            (Categories.BANK_AMLOT, ['עמל.ערוץ יש','עמ.העברת','דמי ניהול','עמ.יבוא']),
+            (Categories.VISA,['מקס','ישראכרט'] ),
+            (Categories.SALARIES,['העברת משכורת','מ.חינוך-משכו-י']),
+            (Categories.INCOMING_TRANSFERS,['הפועלים-ביט','מב. הפועלים-י','מהבינלאומי ס-י','מסיטיבנק ס.-י','טריא קהילה פ-י','מפייבוקס שלי-י','משיכת חיסכון','רבית זכות','מס-הכנסה החז-י','זיכוי עמ.הישיר','קצבת ילדים-י']),
+            (Categories.BANK_TRANSFERS_AND_MONEY_TRANSFERS,['העברת מט"ח 645','המרה אינטרנט','העברה תוך יומי','מכירת ני"ע','תיקון','הע. אינט700','העברה דיגי700','תש.ביבוא יש645','המרה-אינטרנט','קניה-אינטרנט','רשויות אינטרנט']),
             (Categories.WATER,['מיה','שטראוס','מים'] ),           
             (Categories.SUPER,['סופר הכיכר', 'סופר זול', 'מתחם 22','יוחננוף', 'אושר עד', 'שופרסל',  'עדיקה', 'מינימרקט ', 'חצי חינם','AM PM','AM:PM' ,'PM:AM', 'טיב טעם'],),
             (Categories.SCHOOLS,['דוארט','א.מ.ש.', 'LEAPLEARNER ', ' CBT', 'מכללת בית ברל'] ),
@@ -69,7 +73,7 @@ Categorizations = [
             (Categories.ARNONA, ['עיריית הוד השרון', 'עירית הוד השרון']),
             (Categories.CAR_INSURANCE, ['כלמוביל', 'AIG', 'חובה', ' ביטוח ', 'הפניקס']),
             (Categories.CAR_EXPENSES, ['אחוזת החוף מפעל הפיס','חניונים', 'חניה', 'רכבת', 'טעינת', 'פנגו', 'חניון', 'GETT', 'איתוראן', 'חניו', 'כביש 6', 'קאר', 'חניוני', 'הרכב','אי.וי.']),
-            (Categories.HEALTH_INSURANCE, [ 'הפניקס ביטוח', 'מגדל חיים', ' בריאות' ]),
+            (Categories.HEALTH_INSURANCE, ['הראל חברה לב-י', 'הפניקס ביטוח', 'מגדל חיים', ' בריאות' ]),
             (Categories.OTHER_INSURANCE, ['הראל-ביטוח דירה',"פסגות", "מנורה ביטוח דירה"]),
             (Categories.GAS, ["סופרגז"]),
             (Categories.FUEL,['מכמורת', 'סונול', 'פז', 'דלק']),
