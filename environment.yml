@@ -3,6 +3,7 @@
 # Name                    Version                   Build  Channel
 bzip2                     1.0.8                h93a5062_5    conda-forge
 ca-certificates           2024.2.2             hf0a4a13_0    conda-forge
+currencyconverter         0.17.17                  pypi_0    pypi
 et_xmlfile                1.1.0              pyhd8ed1ab_0    conda-forge
 libexpat                  2.6.1                hebf3989_0    conda-forge
 libffi                    3.4.2                h3422bc3_5    conda-forge

@@ -10,15 +10,21 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--bank", ".expenses/bank_march23-march24.xls"]
+            "args": ["--bank", ".expenses/bank_march23-march24.xls"],
+            "env": {
+                "PYTHONIOENCODING": "utf-8"
+            }
         },
         {
             "name": "Python Debugger: Visa File with Debug",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/parse_visa_leumi.py",
+            "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["-v", ".expenses/max_march23-march24.xls"]
+            "args": ["-v", ".expenses/max_march23-march24.xlsx"],
+            "env": {
+                "PYTHONIOENCODING": "utf-8"
+            }
         },
     ]
 }
