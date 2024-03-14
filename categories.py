@@ -42,9 +42,9 @@ Categorizations = [
 
 
             (Categories.WATER,['מיה','שטראוס','מים'] ),           
-            (Categories.SUPER[ 'סופר זול', 'מתחם 22','יוחננוף', 'אושר עד', 'שופרסל',  'עדיקה', 'מינימרקט ', 'חצי חינם','AM PM','AM:PM' ,'PM:AM', 'טיב טעם'],),
-            (Categories.SCHOOLS,['א.מ.ש.', 'LEAPLEARNER ', ' CBT', 'מכללת בית ברל'] ),
-            (Categories.RESTAURANTS_AND_HOTELS,['אונמי','שירותי בר בארועים', 'פורטונה פיצה', 'ארקפה ', 'פיצה ביס', 'נונומימי'
+            (Categories.SUPER,['סופר הכיכר', 'סופר זול', 'מתחם 22','יוחננוף', 'אושר עד', 'שופרסל',  'עדיקה', 'מינימרקט ', 'חצי חינם','AM PM','AM:PM' ,'PM:AM', 'טיב טעם'],),
+            (Categories.SCHOOLS,['דוארט','א.מ.ש.', 'LEAPLEARNER ', ' CBT', 'מכללת בית ברל'] ),
+            (Categories.RESTAURANTS_AND_HOTELS,['אדום בר בע"מ','מקדונלדס','אונמי','שירותי בר בארועים', 'פורטונה פיצה', 'ארקפה ', 'פיצה ביס', 'נונומימי'
                                                 , 'מאפיית טלר', 'עידנס', 'בר אירי', 'חומוס ', 'ארומה ', 'בית רמות'
                                                 , 'שיפודי הנכדים', 'טופולופומפו', 'מייזון קייזר', 'קפה מתתיהו', 'קומבה'
                                                 , "ג'ירף ", 'שרון פיצה', 'זורבה', 'ארקפה ', ' לנדוור', 'דנון', 'מלון ים סוף'
@@ -52,47 +52,47 @@ Categorizations = [
                                                 , 'רימון דוכני ', 'אמפנדו במחנה', 'LEO BLOOMS  ', 'ארקפה  ', 'KFC ', 'מימי ', 'נקודה בלב  '
                                                 , 'שגב ניהון', ' לב הפארק', 'נומי',  "ג'ונז פיצה ", 'חנדלה', 'לנדוור ', 'ברביץ', 'מיצי בשוק '
                                                 , "מקדונלד'ס", 'זוזוברה', 'שושנה', 'OMAM', 'אננדה']),
-            (Categories.PRESENTS,['AMZN MKTP ', 'צעצועון ', 'פאזלבוקס', 'PAYBOX', 'BUYME', ' CHICKIES'
-                                  , ' BIT', 'צומת ספרים', 'אייבורי ', 'PAYBOX', ' STEAM'
-                                  , 'כפר השעשועים', ' SMT', 'אימפריית הצעצועים'] ),
-            (Categories.OTHER_INSURANCE,['שירביט'])
+            (Categories.PRESENTS,['WL *STEAM PURCHASE','XOBELZZUP','טוילנד','AMZN MKTP ', 'צעצועון ', 'פאזלבוקס', 'PAYBOX', 'BUYME', 'CHICKIES'
+                                  , 'BIT', 'צומת ספרים', 'אייבורי', 'PAYBOX', ' STEAM','העברה בBIT'
+                                  , 'כפר השעשועים', 'SMT', 'אימפריית הצעצועים','XOBYAP'] ),
+            (Categories.OTHER_INSURANCE,['שירביט']),
             (Categories.CHECKS, ["שיק"]),
-            (Categories.OTHER_FOOD,['שוק','התמרים','יובל','ROLADIN ', 'מרכז הזמנו', ' סוליקה', 'WOLT', 'בוטיק סטנרל  ', 'בבקה ', 'עולם הממתקים', 'מאפית טלר'
-                                    , 'גולדה ', 'לה פרומזרי ', 'מעדני שמיל ומקסים  ', 'גבינות המשק', 'חומוס כספי', 'קלית הכיכר', 'מעל המצופה'
-                                    , 'מיסטר פיש', 'קפה ', 'ארטיזנל', 'רוזנר', 'לחם תושייה', 'בייקר', 'הפרטוי', "בולנז'רי ", 'אלי דלאל  ', 'בר המשקאות'
-                                    , ' מטבח', 'סוליקה  ', 'מאפית', 'שמו', 'יין בעיר', 'בלילה', 'חלאתי  ', 'פפה ', 'בוטיק סנטרל כפר סבא', 'גלידוש']),
+            (Categories.OTHER_FOOD,['ירק השדה - שטח-צמרת','אמיגו קפה','בוטיק סנטרל כפר סבא','שוק','התמרים','יובל','ROLADIN', 'מרכז הזמנו', 'סוליקה', 'WOLT', 'בוטיק סטנרל', 'בבקה ', 'עולם הממתקים', 'מאפית טלר'
+                                    , 'גולדה ', 'לה פרומזרי ', 'מעדני שמיל ', 'גבינות המשק', 'חומוס כספי', 'קלית הכיכר', 'מעל המצופה'
+                                    , 'מיסטר פיש', 'קפה ', 'ארטיזנל', 'רוזנר', 'לחם תושייה', 'בייקר', 'הפרטוי', "בולנז'רי ", 'אלי דלאל', 'בר המשקאות'
+                                    , ' מטבח', 'מאפית', 'שמו', 'יין בעיר', 'בלילה', 'חלאתי  ', 'פפה ', 'גלידוש']),
             (Categories.INTERNET_AND_PHONES, ['HOT', 'SPIGEN', 'פרטנר', 'סלקום ', 'פלאפון']),
             (Categories.INVESTMENTS, ['מנורה מבטחים-חיים/בריאות']),
             (Categories.ELECTRICITY, ["חשמל"]),
-            (Categories.MISC, ['פאנקי ', 'לוקר אמבין ', "יהושע בפארק ", 'קורט צבי הולנדר ', 'צורי ובניו', 'קפלה'
+            (Categories.MISC, ['פרומרקטינג וויזרד','רעננה  BTW','2017','מגדל לוינשטיין בע"מ','חלאתי בע"מ','ברגע האחרון' ,'וולקום טכנולוגיות בעמ','פאנקי ', 'לוקר אמבין ', "יהושע בפארק ", 'קורט צבי הולנדר ', 'צורי ובניו', 'קפלה'
                                , 'סקארה', 'השואה', ' המכס', 'סיגר קלאב ', 'רשות הדואר-רכישת מוצר דאר', 'צחי ובנצי עיצוב שיער'] ),
             (Categories.ARNONA, ['עיריית הוד השרון', 'עירית הוד השרון']),
             (Categories.CAR_INSURANCE, ['כלמוביל', 'AIG', 'חובה', ' ביטוח ', 'הפניקס']),
-            (Categories.CAR_EXPENSES, ['חניונים', 'חניה', 'רכבת', 'טעינת', 'פנגו', 'חניון ', 'GETT', 'איתוראן', 'חניו', 'כביש 6', 'קאר', 'חניוני', 'הרכב','אי.וי.']),
+            (Categories.CAR_EXPENSES, ['אחוזת החוף מפעל הפיס','חניונים', 'חניה', 'רכבת', 'טעינת', 'פנגו', 'חניון', 'GETT', 'איתוראן', 'חניו', 'כביש 6', 'קאר', 'חניוני', 'הרכב','אי.וי.']),
             (Categories.HEALTH_INSURANCE, [ 'הפניקס ביטוח', 'מגדל חיים', ' בריאות' ]),
-            (Categories.OTHER_INSURANCE, ["פסגות", "מנורה ביטוח דירה"]),
+            (Categories.OTHER_INSURANCE, ['הראל-ביטוח דירה',"פסגות", "מנורה ביטוח דירה"]),
             (Categories.GAS, ["סופרגז"]),
             (Categories.FUEL,['מכמורת', 'סונול', 'פז', 'דלק']),
             (Categories.INCOME_TAX, ['מס הכנסה']),
-            (Categories.HEALTH_AND_MACABI, ['מכבידנט  ', ' מכבי', 'רפואי', 'דראגסטורס', 'מדיקל ', 'סופר פארם','רביע']),
+            (Categories.HEALTH_AND_MACABI, ['נקודה בלב נתלי אלקובי','אופטיקה פרקש','מכבידנט', 'מכבי', 'רפואי', 'דראגסטורס', 'מדיקל', 'סופר פארם','רביע']),
             (Categories.STARTUP,['GOOGLE HEX', 'GOOGLE STORAGE', 'CHATGPT', ' MEDIUM ', 'GOOGLE DEVSISTERS ', 'TOME.APP', 'CLOUD ', 'GITHUB', 'OPENAI '
-                                 , "גאדג'ט טים", 'CLOUD', 'MIDJOURNEY ', 'OPENAI', 'MICROSOFT*STORE ', 'CHATGPT', 'MICROSOFT*PC'])
+                                 , "גאדג'ט טים", 'CLOUD', 'MIDJOURNEY ', 'OPENAI', 'MICROSOFT*STORE ', 'CHATGPT', 'MICROSOFT*PC']),
             (Categories.HUGIM, ['קאנטרי', 'מחול', 'אולדרימס', 'שבט איתן', ' ספורט ', 'אנרגים', 'סטודיו']),
             
             (Categories.CASPOMAT, ["כספומט"]),
            
-            (Categories.CLOTHING,['מרגלית ילדים', 'דרים ספורט', 'קרולינה למקה ', 'S WEAR', 'דלתא', 'רנואר', 'WE SHOSE',
+            (Categories.CLOTHING,['H&M','מרגלית ילדים', 'דרים ספורט', 'קרולינה למקה ', 'S WEAR', 'דלתא', 'רנואר', 'WE SHOSE',
                                 'שופרא', 'תינוקי', 'פוקס', 'אירית הראל', 'קסטרו', 'הודיס ', 'ETSY ', 'גולף', 'מקס',
                                   'מיידלה', 'זארה', 'גלי', 'אורבניקה', 'סימפוני' , 'מיננה'  ,'דקטלון']),
             
-            (Categories.HOME_RELATED,['ללין ', 'RING ', 'א.א חומרי בנין', 'אור לבית', 'אייס כפר סבא', 'אלומה', 'מעבדת השרון'
-                                      , 'קיי. אס.פי', 'פרחי שרונים', 'KSP', 'המרכז לבניין',  'מ.נ.מ   ', 'בריכות ', '  פרחים '
-                                      , 'המשתלה  ', 'איקאה ', ' ELEGANT RADIATORS', 'איקאה', 'וולקום  ', 'סנט- הייר','קיי אס פי'] ),
+            (Categories.HOME_RELATED,['המשתלה של קרן','ללין', 'RING', 'א.א חומרי בנין', 'אור לבית', 'אייס כפר סבא', 'אלומה', 'מעבדת השרון'
+                                      , 'קיי. אס.פי', 'פרחי שרונים', 'KSP', 'המרכז לבניין',  'מ.נ.מ', 'בריכות ', 'פרחים'
+                                      , 'המשתלה', 'איקאה ', ' ELEGANT RADIATORS', 'איקאה', 'וולקום', 'סנט- הייר','קיי אס פי'] ),
 
             (Categories.INTERNET_SERVICES_AND_SHOPPING, ["KINDLE","MARKETPLACE",'PAYPAL', 'WWW.ALIEXPRES','ALIEXPRESS',"WWW.ALIEXPRESS.COM","AMAZON", "AMZN", "GOOGLE", "amzn","SPOTIFYIL","NETFLIX.COM"]),
 
-            (Categories.FUN_AND_MOVIES, ['מקס ', 'ארץ ערבה', 'סטימצקי  ', 'קופת כרטיסים', ' סינמה' , ' צלילה', ' פינוקים ', 'מוזיאון ישראל', 'היכל התרבות', 'PUZZLEBOX', 'מלון השרון'])
-            (Categories.ABROAD_EXPENSES,  ['AIRBNB', 'HERCULES GREEK', 'SEA LIFE', 'TIN BUILDING', 'HULK CART', 
+            (Categories.FUN_AND_MOVIES, ['מקס ', 'ארץ ערבה', 'סטימצקי', 'קופת כרטיסים', ' סינמה' , ' צלילה', ' פינוקים ', 'מוזיאון ישראל', 'היכל התרבות', 'PUZZLEBOX', 'מלון השרון']),
+            (Categories.ABROAD_EXPENSES,  ['STORE','SPORT & MODE ZANGERL','שקם דיוטי','AIRBNB', 'HERCULES GREEK', 'SEA LIFE', 'TIN BUILDING', 'HULK CART', 
                                            'CHILL-N', 'BREAD ALONE', 'CICCOLATITALIAN', 'AVIS', ' SUPERCENTER ',
                                            'MIGROSS', 'PRASINI', 'ITALMARK', 'RESTAURANT ALPTRIDA', 'GEMMA PIZZERIA', 'PIGASOS', '3505 PESCHIERA',
                                            "YUKI'S BAKERY", 'DUNKIN', 'VITAEGUSTO', 'ERGON HOUSE', 'LIM*RIDE', 'UBER', 'ELDORADO', 'AMERIKA GAS STATION',
@@ -113,7 +113,7 @@ Categorizations = [
                                            'ALFIERI BARDOLINO', 'DUTY FREE', 'SUNRISE ', 'MEAT THE GREEK ', 'ארומה נתבג טרמינל 3',
                                            "ג'יי.אר.-היינמן טרמינל 3", 'SQ *BLANK STREET', 'THE UNDERDOG ', 'MARGATE ', 'HM IT0322',
                                            'ישראייר תעופה בע"מ-צמרת', 'COMUNE ', 'WENDYS ', 'רכישת מט"ח', 'MY STRALI',
-                                             'LIDL', 'ZARA HELLAS', 'PINOTSI', 'CELIO 6332', 'WORLD8.CO.IL'])
+                                             'LIDL', 'ZARA', 'PINOTSI', 'CELIO 6332', 'WORLD8.CO.IL'])
         ]
 
 unknown_companies = []
@@ -132,6 +132,7 @@ def get_category(company: str) -> Categories:
         return Categories.UNKNOWN
     
     for category, matches in Categorizations:
+    
         if any(match in company for match in matches):
             return category
     
