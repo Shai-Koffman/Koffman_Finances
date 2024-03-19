@@ -4,6 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        
         {
             "name": "Python Debugger: Bank file W/Debug",
             "type": "debugpy",
@@ -26,6 +28,29 @@
                 "PYTHONIOENCODING": "utf-8"
             }
         },
+        {
+            "name": "Debug with Bank and Visa",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": ["--bank", ".expenses/bank_march23-march24.xls", "-v", ".expenses/max_march23-march24.xlsx"],
+            "env": {
+                "PYTHONIOENCODING": "utf-8"
+            }
+        },   
+        {
+            "name": "debug streamlit",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./.conda/bin/streamlit",  // /home/xx/tmp/venv/bin/streamlit",
+            "args": [
+                "run",
+                "koffman_financial_analysis.py","--",
+                "--bank", ".expenses/bank_march23-march24.xls",
+                 "-v", ".expenses/max_march23-march24.xlsx"
+            ]
+        },   
     ]
 }
 
