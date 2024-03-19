@@ -1,7 +1,9 @@
 #! python
 # -*- coding: utf-8 -*-
 from enum import Enum, auto
+from functools import total_ordering
 
+@total_ordering
 class Categories(Enum):
     SUPER = auto()
     ELECTRICITY = auto()
@@ -37,6 +39,30 @@ class Categories(Enum):
     SALARIES = auto()
     BANK_TRANSFERS_AND_MONEY_TRANSFERS = auto()
     UNKNOWN = auto()
+
+    def __lt__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value < other.value
+        return NotImplemented
+
+    def __eq__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value == other.value
+        return NotImplemented
+
+    def __hash__(self):
+        return hash(self.value)
+    
+    def to_string(self):
+        return str(self)
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"Categories.{self.name}"
+    
+    def __reduce__(self):
+        return (self.__class__, (self.name,))
 
 # Categorizations - list of tuples, each tuple contains a category and a list of strings that are the names of the expenses that belong to this category
 Categorizations = [
