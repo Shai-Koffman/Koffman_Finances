@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from expenses_processor import ExpenseAnalysis
-import matplotlib.pyplot as plt
+
 
 class ExpenseDashboard:
     def __init__(self, expense_analysis: ExpenseAnalysis):
@@ -10,15 +10,29 @@ class ExpenseDashboard:
 
     def run(self):
         st.title("Koffman Household financial Dashboard")
-        self.display_monthly_expenses_by_category()
-        self.display_category_month_by_month()
-        self.display_yearly_expenses_by_category()
-        self.display_expenses_by_date_range()
+        self.display_monthly_expenses_vs_gains()
+        # self.display_monthly_expenses_by_category()
+        # self.display_category_month_by_month()
+        # self.display_yearly_expenses_by_category()
+        # self.display_expenses_by_date_range()
+
+    def display_monthly_expenses_vs_gains(self):
+        st.header("Monthly Expenses vs Gains")
+
+        # Calculate monthly expenses and gains
+        gains_per_month, expenses_per_month = self.expense_analysis.total_gains_and_expenses_per_month()
+        monthly_data = pd.DataFrame({'Month': expenses_per_month.index, 'Expenses': expenses_per_month.values, 'Gains': -gains_per_month.values})
+
+        # Format the 'Month' column to only show year and month
+        monthly_data['Month'] = monthly_data['Month'].dt.strftime('%m/%Y')
+
+        # Create a bar chart using Streamlit's native functionality
+        st.bar_chart(monthly_data.set_index('Month'))
+
+
+
 
     #The method below should display the monthly expenses in a pie chart of categories per month.
-        
-    
-
     def display_monthly_expenses_by_category(self):
         st.header("Monthly Expenses by Category")
         monthly_expenses = self.expense_analysis.monthly_expenses_by_category().reset_index()
@@ -52,7 +66,7 @@ class ExpenseDashboard:
         st.table(monthly_expenses)
 
     def display_category_month_by_month(self):
-        category = st.selectbox("Select a category", self.expense_analysis.expenses['category'].unique())
+        category = st.selectbox("Select a category", self.expense_analysis.all_generic_expenses['category'].unique())
         st.header(f"Month by Month Expenses for {category}")
         category_monthly_expenses = self.expense_analysis.category_month_by_month(category).reset_index()
         st.write(category_monthly_expenses)
@@ -63,9 +77,9 @@ class ExpenseDashboard:
         st.write(yearly_expenses)
 
     def display_expenses_by_date_range(self):
-        start_date = st.date_input("Start Date", value=self.expense_analysis.expenses.index.min())
-        end_date = st.date_input("End Date", value=self.expense_analysis.expenses.index.max())
-        filtered_expenses = self.expense_analysis.expenses.loc[start_date:end_date]
+        start_date = st.date_input("Start Date", value=self.expense_analysis.all_generic_expenses.index.min())
+        end_date = st.date_input("End Date", value=self.expense_analysis.all_generic_expenses.index.max())
+        filtered_expenses = self.expense_analysis.all_generic_expenses.loc[start_date:end_date]
 
         st.header(f"Monthly Expenses by Category ({start_date} - {end_date})")
         monthly_expenses_filtered = filtered_expenses.groupby([pd.Grouper(freq='ME'), 'category'])['expense'].sum().reset_index()
