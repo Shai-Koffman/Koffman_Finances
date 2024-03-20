@@ -2,11 +2,14 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from display_expense_for_month import ExpenseForMonthDisplay
-from expenses_processor import ExpenseAnalysis, AccountType
+from expenses_processor import TransactionsAnalysis, AccountType
+from investements import InvestementProcessor
 
-class ExpenseDashboard:
-    def __init__(self, expense_analysis: ExpenseAnalysis):
+
+class Dashboard:
+    def __init__(self, expense_analysis: TransactionsAnalysis, investements_processor: InvestementProcessor):
         self.expense_analysis = expense_analysis
+        self.investements_processor = investements_processor
 
     def run(self):
         st.title("Koffman Financial Dashboard")
@@ -16,7 +19,8 @@ class ExpenseDashboard:
             'display_bank_monthly_expenses_vs_gains',
             'display_expenses_for_month',
             'display_monthly_expenses_by_category',
-            'display_detailed_transactions'
+            'display_detailed_transactions',
+            'display_invested_money_distribution'
         ]
 
         # Sidebar menu for navigation, with "Monthly Expenses vs Gains" as the default selection
@@ -181,3 +185,16 @@ class ExpenseDashboard:
         # Displaying transactions in a table
         df = pd.DataFrame(data, columns=columns)
         st.table(df)
+
+    def display_invested_money_distribution(self):
+        st.header("Invested Money Distribution")
+        
+        # Fetch investment data as a DataFrame using the existing investements_processor instance
+        investments_df = self.investements_processor.get_investements_series()
+
+        # Display investments in a table
+        st.table(investments_df)
+
+        # Calculate and display the total amount invested
+        total_invested = investments_df['amount'].sum()
+        st.markdown(f"**Total Amount Invested:** ${total_invested:,.2f}")

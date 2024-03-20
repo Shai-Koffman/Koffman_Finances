@@ -5,4 +5,7 @@ To prepare the data for analysis, follow these steps:
 
 2. **Feed the data**: Feed the data, Make sure to add unknown categories to the categories file, There are helpers for that in data_preperation.
 
+3. **Investements** - Add the investements to the investements file and update the dates, Follow the links in the existing file.
+
 3. **Look at the data** - Go to the website at XXX and introspect the data
+

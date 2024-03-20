@@ -12,7 +12,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--bank", ".expenses/bank_march23-march24.xls"],
+            "args": ["--bank", ".data/bank_march23-march24.xls"],
             "env": {
                 "PYTHONIOENCODING": "utf-8"
             }
@@ -23,7 +23,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["-v", ".expenses/max_march23-march24.xlsx"],
+            "args": ["-v", ".data/max_march23-march24.xlsx"],
             "env": {
                 "PYTHONIOENCODING": "utf-8"
             }
@@ -34,7 +34,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--bank", ".expenses/bank_march23-march24.xls", "-v", ".expenses/max_march23-march24.xlsx"],
+            "args": ["--bank", ".data/bank_march23-march24.xls", "-v", ".data/max_march23-march24.xlsx"],
             "env": {
                 "PYTHONIOENCODING": "utf-8"
             }
@@ -47,8 +47,9 @@
             "args": [
                 "run",
                 "koffman_financial_analysis.py","--",
-                "--bank", ".expenses/bank_march23-march24.xls",
-                 "-v", ".expenses/max_march23-march24.xlsx"
+                "--bank", ".data/bank_march23-march24.xls",
+                 "-v", ".data/max_march23-march24.xlsx",
+                 "--investements", ".data/investements.json"
             ]
         },   
     ]
