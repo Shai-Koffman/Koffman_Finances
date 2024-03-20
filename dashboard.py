@@ -95,21 +95,25 @@ class ExpenseDashboard:
         bank_expenses = self.expense_analysis.bank_monthly_expenses(year, month).round().astype(int)
         bank_gains = self.expense_analysis.bank_monthly_gains(year, month).round().astype(int)
 
-        # Filter out 0 expenses
-        bank_expenses = bank_expenses[bank_expenses > 0]
-        bank_gains = bank_gains[bank_gains > 0]
+        # Filter out 0 expenses and gains, then sort in descending order
+        bank_expenses = bank_expenses[bank_expenses > 0].sort_values(ascending=False)
+        bank_gains = bank_gains[bank_gains > 0].sort_values(ascending=False)
 
+        # Display expenses with Shekel sign in a table using Markdown
         if not bank_expenses.empty:
             st.write("Expenses:")
-            # Sort by expense descending and format with Shekel sign
-            st.table(bank_expenses.reset_index().sort_values('expense', ascending=False).style.format({"expense": "₪{:,}"}))
+            expenses_table = "Category | Expense\n---|---\n"
+            expenses_table += "\n".join([f"{category} | ₪{expense:,}" for category, expense in bank_expenses.items()])
+            st.markdown(expenses_table, unsafe_allow_html=True)
         else:
             st.write("No bank expenses for this month.")
 
+        # Display gains with Shekel sign in a table using Markdown
         if not bank_gains.empty:
             st.write("Gains:")
-            # Sort by gains ascending and format with Shekel sign
-            st.table(bank_gains.reset_index().sort_values('gains').style.format({"gains": "₪{:,}"}))  
+            gains_table = "Category | Gains\n---|---\n"
+            gains_table += "\n".join([f"{category} | ₪{gains:,}" for category, gains in bank_gains.items()])
+            st.markdown(gains_table, unsafe_allow_html=True)
         else:
             st.write("No bank gains for this month.")
 
@@ -118,21 +122,24 @@ class ExpenseDashboard:
         visa_max_expenses = self.expense_analysis.visa_max_monthly_expenses(year, month).round().astype(int)
         visa_max_gains = self.expense_analysis.visa_max_monthly_gains(year, month).round().astype(int)
 
-        # Filter out 0 expenses
-        visa_max_expenses = visa_max_expenses[visa_max_expenses > 0]
-        visa_max_gains = visa_max_gains[visa_max_gains > 0]
+        # Filter out 0 expenses and gains, then sort in descending order
+        visa_max_expenses = visa_max_expenses[visa_max_expenses > 0].sort_values(ascending=False)
+        visa_max_gains = visa_max_gains[visa_max_gains > 0].sort_values(ascending=False)
 
+        # Display Visa Max expenses with Shekel sign in a table using Markdown
         if not visa_max_expenses.empty:
-            st.write("Expenses:")
-            # Sort by expense descending and format with Shekel sign
-            st.table(visa_max_expenses.reset_index().sort_values('expense', ascending=False).style.format({"expense": "₪{:,}"}))
+            st.write("Visa Max Expenses:")
+            visa_expenses_table = "Category | Expense\n---|---\n"
+            visa_expenses_table += "\n".join([f"{category} | ₪{expense:,}" for category, expense in visa_max_expenses.items()])
+            st.markdown(visa_expenses_table, unsafe_allow_html=True)
         else:
             st.write("No Visa Max expenses for this month.")
 
+        # Display Visa Max gains with Shekel sign in a table using Markdown
         if not visa_max_gains.empty:
-            st.write("Gains:")
-            # Sort by gains ascending and format with Shekel sign
-            st.table(visa_max_gains.reset_index().sort_values('gains').style.format({"gains": "₪{:,}"}))  
+            st.write("Visa Max Gains:")
+            visa_gains_table = "Category | Gains\n---|---\n"
+            visa_gains_table += "\n".join([f"{category} | ₪{gains:,}" for category, gains in visa_max_gains.items()])
+            st.markdown(visa_gains_table, unsafe_allow_html=True)
         else:
             st.write("No Visa Max gains for this month.")
-
