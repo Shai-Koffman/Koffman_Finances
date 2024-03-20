@@ -29,10 +29,14 @@ class ExpenseAnalysis:
     def yearly_expenses_by_category(self) -> pd.DataFrame:
         return self.all_generic_expenses.groupby([pd.Grouper(freq='YE'), 'category'])['expense'].sum()
         
-    #returns a tuple of DataFrame lists, one foor gains total per month and one for expenses total per month.
-    def total_gains_and_expenses_per_month(self) ->Tuple[pd.Series, pd.Series]:
-        gains_per_month = self.all_generic_expenses[self.all_generic_expenses['expense'] < 0].groupby(pd.Grouper(freq='ME'))['expense'].sum()
-        expenses_per_month = self.all_generic_expenses[self.all_generic_expenses['expense'] > 0].groupby(pd.Grouper(freq='ME'))['expense'].sum()
+    #returns a tuple of DataFrame lists, one for bank gains total per month and one for bank expenses total per month.
+    def bank_total_gains_and_expenses_per_month(self) ->Tuple[pd.Series, pd.Series]:
+        bank_expenses = self.bank_expenses_pd.copy()
+        bank_expenses['date'] = pd.to_datetime(bank_expenses['date'])
+        bank_expenses.set_index('date', inplace=True)
+        
+        gains_per_month = bank_expenses[bank_expenses['expense'] < 0].groupby(pd.Grouper(freq='ME'))['expense'].sum()
+        expenses_per_month = bank_expenses[bank_expenses['expense'] > 0].groupby(pd.Grouper(freq='ME'))['expense'].sum()
         # Create a common date range for both gains and expenses
         all_dates = gains_per_month.index.union(expenses_per_month.index)
         # Reindex gains and expenses to the common date range and fill missing values with 0
