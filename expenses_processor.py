@@ -8,7 +8,7 @@ class AccountType(Enum):
     BANK = auto()
     VISA_MAX = auto()
 
-class ExpenseAnalysis:
+class TransactionsAnalysis:
     def __init__(self, bank_transactions: List[BankTransaction], visa_transactions: List[VisaMaxTransaction]):
         columns = ['date', 'category', 'expense', 'gains']
         # For bank expenses

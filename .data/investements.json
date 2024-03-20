@@ -1,0 +1,131 @@
+{
+    "investements": [
+      {
+        
+        "name": "Bank Leumi - Account", 
+        "url": "https://hb2.bankleumi.co.il/eBanking/SO/SPA.aspx#/hpsummary",
+        "amount": 170402.0,
+        "currency": "ILS",
+        "last_update_date": "20-03-2024",
+        "itd": 0.0,
+        "itd_date": "20-03-2024"
+      },
+
+      {
+        "name": "Bank Leumi - Dollars", 
+        "url": "https://hb2.bankleumi.co.il/eBanking/SO/SPA.aspx#/hpsummary",
+        "amount": 1838.0,
+        "currency": "USD",
+        "last_update_date": "20-03-2024",
+        "itd": 0.0,
+        "itd_date": "20-03-2024"
+      },
+
+      {
+        
+        "name": "Bank Leumi - Keren Kaspit", 
+        "url": "https://hb2.bankleumi.co.il/lti/lti-app/trade/portfolio",
+        "amount": 502788.0,
+        "currency": "ILS",
+        "last_update_date": "20-03-2024",
+        "itd": 1.58,
+        "itd_date": "12-12-2023"
+      },
+      {
+        
+        "name": "More Alternative", 
+        "url": "https://hb2.bankleumi.co.il/lti/lti-app/trade/portfolio",
+        "amount": 1057511.0,
+        "currency": "ILS",
+        "last_update_date": "20-03-2024",
+        "itd": 14.92,
+        "itd_date" : "1-06-2023"
+      },
+      {
+        
+        "name": "Pagaya Opp", 
+        "url": "https://hb2.bankleumi.co.il/lti/lti-app/trade/portfolio",
+        "amount": 985908.0,
+        "currency": "ILS",
+        "last_update_date": "20-03-2024",
+        "itd": 7.14,
+        "itd_date": "1-07-2021"
+      },
+
+      {
+        "name": "Pagaya Offshore feeder - Smart Resi.", 
+        "url": "https://portal.roeto.co.il/karni/dashboard",
+        "amount": 1095000.0,
+        "currency": "ILS",
+        "last_update_date": "30-09-23",
+        "itd": 19.82,
+        "itd_date": "1-07-2021"
+      },
+
+      {
+        "name": "Insight",
+        "url": "http://portal.roeto.co.il/karni/dashboard",
+        "amount": 724294.0,
+        "currency": "ILS",
+        "last_update_date": "20-03-2024",
+        "itd": 0.0,
+        "itd_date": "20-03-2024"
+      },
+      {
+        "name": "Electra Alemif",
+        "url": "http://portal.roeto.co.il/karni/dashboard",
+        "amount": 874350.0,
+        "currency": "ILS",
+        "last_update_date": "30-09-2023",
+        "itd": 10.0,
+        "itd_date": "14-03-2023"
+      },
+      {
+        "name": "Taria",
+        "url": "http://portal.roeto.co.il/karni/dashboard",
+        "amount": 327041.0,
+        "currency": "ILS",
+        "last_update_date": "29-02-2024",
+        "itd": 10.0,
+        "itd_date": "03-07-2022"
+      },
+
+      {
+        "name" : "Menora Top Finance - Inbar",
+        "url" : "https://www.menoramivt.co.il/personal/dashboard/",
+        "amount" : 91323.0,
+        "currency" : "ILS",
+        "last_update_date" : "20-03-2024",
+        "itd" : 57.0,
+        "itd_date" : "01-06-2014"
+      },
+      {
+        "name" : "Menora Top Finance - Omer",
+        "url" : "https://www.menoramivt.co.il/personal/dashboard/",
+        "amount" : 99804.0,
+        "currency" : "ILS",
+        "last_update_date" : "20-03-2024",
+        "itd" : 72.0,
+        "itd_date" : "01-06-2014"
+      },
+      {
+        "name" : "Menora Top Finance - Rotem",
+        "url" : "https://www.menoramivt.co.il/personal/dashboard/",
+        "amount" : 62187.0,
+        "currency" : "ILS",
+        "last_update_date" : "20-03-2024",
+        "itd" : 75.0,
+        "itd_date" : "01-03-2018"
+      },
+      {
+        "name" : "Google Stock",
+        "url" : "https://www.capital-m.co.il/C-MClient/op2/login?returnUrl=%2FC-MClient%2Fop2%2Flogin",
+        "amount" : 3000000.0,
+        "currency" : "ILS",
+        "last_update_date" : "20-03-2024",
+        "itd" : 50.0,
+        "itd_date" : "01-08-2029"
+      }
+     
+    ]
+  }

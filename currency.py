@@ -16,6 +16,15 @@ class CoinType(Enum):
             return CoinType.EURO
         elif symbol == '$':
             return CoinType.DOLLAR
+    
+    def get_coin_from_name(name: str) -> 'CoinType':
+        if name == 'ILS':
+            return CoinType.SHEKEL
+        elif name == 'EUR':
+            return CoinType.EURO
+        elif name == 'USD':
+            return CoinType.DOLLAR
+    
     @staticmethod
-    def normalize_expense_sum(expense_sum: int, coin: 'CoinType') -> float:
-        return expense_sum * coin.value
+    def normalize_sum(sum: int, coin: 'CoinType') -> float:
+        return sum * coin.value
