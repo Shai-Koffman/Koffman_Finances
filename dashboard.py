@@ -102,8 +102,12 @@ class ExpenseDashboard:
         # Display expenses with Shekel sign in a table using Markdown
         if not bank_expenses.empty:
             st.write("Expenses:")
-            expenses_table = "Category | Expense\n---|---\n"
-            expenses_table += "\n".join([f"{category} | ₪{expense:,}" for category, expense in bank_expenses.items()])
+            expenses_table = "<table><tr><th style='text-align: left;'>Category</th><th style='text-align: right;'>Expense</th></tr>"
+            expenses_table += "\n".join([f"<tr><td>{category}</td><td style='text-align: right;'>₪{expense:,}</td></tr>" for category, expense in bank_expenses.items()])
+            # Calculate and append the total row
+            total_expenses = bank_expenses.sum()
+            expenses_table += f"<tr style='font-weight: bold; background-color: #f0f0f0;'><td>Total</td><td style='text-align: right;'>₪{total_expenses:,}</td></tr>"
+            expenses_table += "</table>"
             st.markdown(expenses_table, unsafe_allow_html=True)
         else:
             st.write("No bank expenses for this month.")
@@ -111,8 +115,12 @@ class ExpenseDashboard:
         # Display gains with Shekel sign in a table using Markdown
         if not bank_gains.empty:
             st.write("Gains:")
-            gains_table = "Category | Gains\n---|---\n"
-            gains_table += "\n".join([f"{category} | ₪{gains:,}" for category, gains in bank_gains.items()])
+            gains_table = "<table><tr><th style='text-align: left;'>Category</th><th style='text-align: right;'>Gains</th></tr>"
+            gains_table += "\n".join([f"<tr><td>{category}</td><td style='text-align: right;'>₪{gains:,}</td></tr>" for category, gains in bank_gains.items()])
+            # Calculate and append the total row
+            total_gains = bank_gains.sum()
+            gains_table += f"<tr style='font-weight: bold; background-color: #f0f0f0;'><td>Total</td><td style='text-align: right;'>₪{total_gains:,}</td></tr>"
+            gains_table += "</table>"
             st.markdown(gains_table, unsafe_allow_html=True)
         else:
             st.write("No bank gains for this month.")
@@ -129,8 +137,12 @@ class ExpenseDashboard:
         # Display Visa Max expenses with Shekel sign in a table using Markdown
         if not visa_max_expenses.empty:
             st.write("Visa Max Expenses:")
-            visa_expenses_table = "Category | Expense\n---|---\n"
-            visa_expenses_table += "\n".join([f"{category} | ₪{expense:,}" for category, expense in visa_max_expenses.items()])
+            visa_expenses_table = "<table><tr><th style='text-align: left;'>Category</th><th style='text-align: right;'>Expense</th></tr>"
+            visa_expenses_table += "\n".join([f"<tr><td>{category}</td><td style='text-align: right;'>₪{expense:,}</td></tr>" for category, expense in visa_max_expenses.items()])
+            # Calculate and append the total row
+            total_visa_expenses = visa_max_expenses.sum()
+            visa_expenses_table += f"<tr style='font-weight: bold; background-color: #f0f0f0;'><td>Total</td><td style='text-align: right;'>₪{total_visa_expenses:,}</td></tr>"
+            visa_expenses_table += "</table>"
             st.markdown(visa_expenses_table, unsafe_allow_html=True)
         else:
             st.write("No Visa Max expenses for this month.")
@@ -138,8 +150,12 @@ class ExpenseDashboard:
         # Display Visa Max gains with Shekel sign in a table using Markdown
         if not visa_max_gains.empty:
             st.write("Visa Max Gains:")
-            visa_gains_table = "Category | Gains\n---|---\n"
-            visa_gains_table += "\n".join([f"{category} | ₪{gains:,}" for category, gains in visa_max_gains.items()])
+            visa_gains_table = "<table><tr><th style='text-align: left;'>Category</th><th style='text-align: right;'>Gains</th></tr>"
+            visa_gains_table += "\n".join([f"<tr><td>{category}</td><td style='text-align: right;'>₪{gains:,}</td></tr>" for category, gains in visa_max_gains.items()])
+            # Calculate and append the total row
+            total_visa_gains = visa_max_gains.sum()
+            visa_gains_table += f"<tr style='font-weight: bold; background-color: #f0f0f0;'><td>Total</td><td style='text-align: right;'>₪{total_visa_gains:,}</td></tr>"
+            visa_gains_table += "</table>"
             st.markdown(visa_gains_table, unsafe_allow_html=True)
         else:
             st.write("No Visa Max gains for this month.")
