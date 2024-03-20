@@ -3,7 +3,7 @@
 
 from dateutil.parser import parse
 import openpyxl
-from expenses import VisaMaxTransaction
+from transactions import VisaMaxTransaction
 from currency import CoinType
 from categories import get_category
 

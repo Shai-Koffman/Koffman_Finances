@@ -1,7 +1,7 @@
 
 from math import exp
 from xlrd  import open_workbook  
-from expenses import BankTransaction  
+from transactions import BankTransaction  
 from categories import get_category
 from datetime import datetime
 
