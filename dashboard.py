@@ -30,8 +30,11 @@ class ExpenseDashboard:
     def display_bank_monthly_expenses_vs_gains(self):
         st.header("Bank Monthly Expenses vs Gains")
 
+        # Checkbox to exclude BANK_TRANSFERS_AND_MONEY_TRANSFERS
+        exclude_transfers = st.checkbox('Exclude money transfers')
+
         # Calculate monthly expenses and gains
-        gains_per_month, expenses_per_month = self.expense_analysis.bank_total_gains_and_expenses_per_month()
+        gains_per_month, expenses_per_month = self.expense_analysis.bank_total_gains_and_expenses_per_month(exclude_transfers=exclude_transfers)
         
         # Expenses Data
         expenses_data = pd.DataFrame({'Month': expenses_per_month.index, 'Expenses': expenses_per_month.values})

@@ -39,3 +39,39 @@ class ExpenseForMonthDisplay:
             st.markdown(gains_table, unsafe_allow_html=True)
         else:
             st.write("No bank gains for this month.")
+
+        # Visa Max expenses and gains
+        st.subheader("Visa Max Expenses and Gains")
+        visa_max_expenses = expense_analysis.visa_max_monthly_expenses(year, month).round().astype(int)
+        visa_max_gains = expense_analysis.visa_max_monthly_gains(year, month).round().astype(int)
+
+        # Filter out 0 expenses and gains, then sort in descending order
+        visa_max_expenses = visa_max_expenses[visa_max_expenses > 0].sort_values(ascending=False)
+        visa_max_gains = visa_max_gains[visa_max_gains > 0].sort_values(ascending=False)
+
+        # Display Visa expenses with Shekel sign in a table using Markdown
+        if not visa_max_expenses.empty:
+            st.write("Visa Max Expenses:")
+            visa_max_expenses_table = "<table><tr><th>Category</th><th>Expense</th></tr>"
+            visa_max_expenses_table += "\n".join([f"<tr><td>{category}</td><td>₪{expense:,}</td></tr>" for category, expense in visa_max_expenses.items()])
+            # Calculate and append the total row
+            total_visa_max_expenses = visa_max_expenses.sum()
+            visa_max_expenses_table += f"<tr style='font-weight: bold;'><td>Total</td><td>₪{total_visa_max_expenses:,}</td></tr>"
+            visa_max_expenses_table += "</table>"
+            st.markdown(visa_max_expenses_table, unsafe_allow_html=True)
+        else:
+            st.write("No Visa expenses for this month.")
+
+        # Display Visa Max gains with Shekel sign in a table using Markdown
+        if not visa_max_gains.empty:
+            st.write("Visa Max Gains:")
+            visa_max_gains_table = "<table><tr><th>Category</th><th>Gains</th></tr>"
+            visa_max_gains_table += "\n".join([f"<tr><td>{category}</td><td>₪{gains:,}</td></tr>" for category, gains in visa_max_gains.items()])
+            # Calculate and append the total row
+            total_visa_max_gains = visa_max_gains.sum()
+            visa_max_gains_table += f"<tr style='font-weight: bold;'><td>Total</td><td>₪{total_visa_max_gains:,}</td></tr>"
+            visa_max_gains_table += "</table>"
+            st.markdown(visa_max_gains_table, unsafe_allow_html=True)
+        else:
+            st.write("No Visa Max gains for this month.")
+
