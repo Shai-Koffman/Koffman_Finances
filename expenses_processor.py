@@ -1,5 +1,5 @@
 from categories import Categories
-from expenses import BankTransaction, Transaction,VisaTransaction
+from expenses import BankTransaction, Transaction,VisaMaxTransaction
 from csv_output import save_to_csv
 from database import save_to_database
 from typing import List,Tuple
@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class ExpenseAnalysis:
-    def __init__(self, bank_expenses: List[BankTransaction], visa_expenses: List[VisaTransaction]):
+    def __init__(self, bank_expenses: List[BankTransaction], visa_expenses: List[VisaMaxTransaction]):
         columns = ['date', 'category', 'expense', 'gains']
         # For bank expenses
         self.bank_expenses_pd = pd.DataFrame([(exp.get_transaction_date(),
@@ -40,12 +40,12 @@ class ExpenseAnalysis:
         return filtered_gains.groupby('category')['gains'].sum()
 
 
-    def visa_monthly_gains(self, year: int, month: int) -> pd.Series:
+    def visa_max_monthly_gains(self, year: int, month: int) -> pd.Series:
         visa_dates = self.visa_expenses_pd.index
         filtered_gains = self.visa_expenses_pd[(visa_dates.year == year) & (visa_dates.month == month)]
         return filtered_gains.groupby('category')['gains'].sum()
     
-    def visa_monthly_expenses(self, year: int, month: int) -> pd.Series:
+    def visa_max_monthly_expenses(self, year: int, month: int) -> pd.Series:
         visa_dates = self.visa_expenses_pd.index
         filtered_expenses = self.visa_expenses_pd[(visa_dates.year == year) & (visa_dates.month == month)]
         return filtered_expenses.groupby('category')['expense'].sum()

@@ -114,24 +114,25 @@ class ExpenseDashboard:
             st.write("No bank gains for this month.")
 
         # Visa expenses and gains
-        st.subheader("Visa Expenses and Gains")
-        visa_expenses = self.expense_analysis.visa_monthly_expenses(year, month).round().astype(int)
-        visa_gains = self.expense_analysis.visa_monthly_gains(year, month).round().astype(int)
+        st.subheader("Visa Max Expenses and Gains")
+        visa_max_expenses = self.expense_analysis.visa_max_monthly_expenses(year, month).round().astype(int)
+        visa_max_gains = self.expense_analysis.visa_max_monthly_gains(year, month).round().astype(int)
 
         # Filter out 0 expenses
-        visa_expenses = visa_expenses[visa_expenses > 0]
-        visa_gains = visa_gains[visa_gains > 0]
+        visa_max_expenses = visa_max_expenses[visa_max_expenses > 0]
+        visa_max_gains = visa_max_gains[visa_max_gains > 0]
 
-        if not visa_expenses.empty:
+        if not visa_max_expenses.empty:
             st.write("Expenses:")
             # Sort by expense descending and format with Shekel sign
-            st.table(visa_expenses.reset_index().sort_values('expense', ascending=False).style.format({"expense": "₪{:,}"}))
+            st.table(visa_max_expenses.reset_index().sort_values('expense', ascending=False).style.format({"expense": "₪{:,}"}))
         else:
-            st.write("No Visa expenses for this month.")
+            st.write("No Visa Max expenses for this month.")
 
-        if not visa_gains.empty:
+        if not visa_max_gains.empty:
             st.write("Gains:")
             # Sort by gains ascending and format with Shekel sign
-            st.table(visa_gains.reset_index().sort_values('gains').style.format({"gains": "₪{:,}"}))  
+            st.table(visa_max_gains.reset_index().sort_values('gains').style.format({"gains": "₪{:,}"}))  
         else:
-            st.write("No Visa gains for this month.")
+            st.write("No Visa Max gains for this month.")
+

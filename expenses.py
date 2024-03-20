@@ -47,7 +47,7 @@ class BankTransaction(Transaction):
 
 
 
-class VisaTransaction(Transaction):
+class VisaMaxTransaction(Transaction):
     
     def __init__(self, sheet_title: str, company: str, known_category: Categories, visa_max_category: str, visa_card_number: str, expense_sum: int,gain_sum, coin: CoinType, expense_date: datetime.datetime):
         self.sheet_title = sheet_title

@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from categories import Categories
-
-
 
 def main():
     unknown_companies = []
