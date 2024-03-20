@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import inspect
+from display_expense_for_month import ExpenseForMonthDisplay
 from expenses_processor import ExpenseAnalysis
 
 class ExpenseDashboard:
@@ -87,75 +88,7 @@ class ExpenseDashboard:
         # Use Streamlit's date_input to select a year and month
         selected_date = st.date_input("Select a year and month", value=pd.to_datetime("today"), min_value=None, max_value=None, key=None)
         year, month = selected_date.year, selected_date.month
+        efmd = ExpenseForMonthDisplay() 
+        efmd.display_expenses_for_month(self.expense_analysis, year, month)
 
-        st.header(f"Expenses and Gains for {selected_date.strftime('%B %Y')}")
-
-        # Bank expenses and gains
-        st.subheader("Bank Expenses and Gains")
-        bank_expenses = self.expense_analysis.bank_monthly_expenses(year, month).round().astype(int)
-        bank_gains = self.expense_analysis.bank_monthly_gains(year, month).round().astype(int)
-
-        # Filter out 0 expenses and gains, then sort in descending order
-        bank_expenses = bank_expenses[bank_expenses > 0].sort_values(ascending=False)
-        bank_gains = bank_gains[bank_gains > 0].sort_values(ascending=False)
-
-        # Display expenses with Shekel sign in a table using Markdown
-        if not bank_expenses.empty:
-            st.write("Expenses:")
-            expenses_table = "<table><tr><th style='text-align: left;'>Category</th><th style='text-align: right;'>Expense</th></tr>"
-            expenses_table += "\n".join([f"<tr><td>{category}</td><td style='text-align: right;'>₪{expense:,}</td></tr>" for category, expense in bank_expenses.items()])
-            # Calculate and append the total row
-            total_expenses = bank_expenses.sum()
-            expenses_table += f"<tr style='font-weight: bold; background-color: #f0f0f0;'><td>Total</td><td style='text-align: right;'>₪{total_expenses:,}</td></tr>"
-            expenses_table += "</table>"
-            st.markdown(expenses_table, unsafe_allow_html=True)
-        else:
-            st.write("No bank expenses for this month.")
-
-        # Display gains with Shekel sign in a table using Markdown
-        if not bank_gains.empty:
-            st.write("Gains:")
-            gains_table = "<table><tr><th style='text-align: left;'>Category</th><th style='text-align: right;'>Gains</th></tr>"
-            gains_table += "\n".join([f"<tr><td>{category}</td><td style='text-align: right;'>₪{gains:,}</td></tr>" for category, gains in bank_gains.items()])
-            # Calculate and append the total row
-            total_gains = bank_gains.sum()
-            gains_table += f"<tr style='font-weight: bold; background-color: #f0f0f0;'><td>Total</td><td style='text-align: right;'>₪{total_gains:,}</td></tr>"
-            gains_table += "</table>"
-            st.markdown(gains_table, unsafe_allow_html=True)
-        else:
-            st.write("No bank gains for this month.")
-
-        # Visa expenses and gains
-        st.subheader("Visa Max Expenses and Gains")
-        visa_max_expenses = self.expense_analysis.visa_max_monthly_expenses(year, month).round().astype(int)
-        visa_max_gains = self.expense_analysis.visa_max_monthly_gains(year, month).round().astype(int)
-
-        # Filter out 0 expenses and gains, then sort in descending order
-        visa_max_expenses = visa_max_expenses[visa_max_expenses > 0].sort_values(ascending=False)
-        visa_max_gains = visa_max_gains[visa_max_gains > 0].sort_values(ascending=False)
-
-        # Display Visa Max expenses with Shekel sign in a table using Markdown
-        if not visa_max_expenses.empty:
-            st.write("Visa Max Expenses:")
-            visa_expenses_table = "<table><tr><th style='text-align: left;'>Category</th><th style='text-align: right;'>Expense</th></tr>"
-            visa_expenses_table += "\n".join([f"<tr><td>{category}</td><td style='text-align: right;'>₪{expense:,}</td></tr>" for category, expense in visa_max_expenses.items()])
-            # Calculate and append the total row
-            total_visa_expenses = visa_max_expenses.sum()
-            visa_expenses_table += f"<tr style='font-weight: bold; background-color: #f0f0f0;'><td>Total</td><td style='text-align: right;'>₪{total_visa_expenses:,}</td></tr>"
-            visa_expenses_table += "</table>"
-            st.markdown(visa_expenses_table, unsafe_allow_html=True)
-        else:
-            st.write("No Visa Max expenses for this month.")
-
-        # Display Visa Max gains with Shekel sign in a table using Markdown
-        if not visa_max_gains.empty:
-            st.write("Visa Max Gains:")
-            visa_gains_table = "<table><tr><th style='text-align: left;'>Category</th><th style='text-align: right;'>Gains</th></tr>"
-            visa_gains_table += "\n".join([f"<tr><td>{category}</td><td style='text-align: right;'>₪{gains:,}</td></tr>" for category, gains in visa_max_gains.items()])
-            # Calculate and append the total row
-            total_visa_gains = visa_max_gains.sum()
-            visa_gains_table += f"<tr style='font-weight: bold; background-color: #f0f0f0;'><td>Total</td><td style='text-align: right;'>₪{total_visa_gains:,}</td></tr>"
-            visa_gains_table += "</table>"
-            st.markdown(visa_gains_table, unsafe_allow_html=True)
-        else:
-            st.write("No Visa Max gains for this month.")
+       
