@@ -1,5 +1,5 @@
 import streamlit as st
-import pandas as pd
+
 
 class ExpenseForMonthDisplay:
     def display_expenses_for_month(self, expense_analysis, year, month):
