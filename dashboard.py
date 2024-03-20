@@ -3,7 +3,8 @@ import pandas as pd
 import inspect
 import matplotlib.pyplot as plt
 from display_expense_for_month import ExpenseForMonthDisplay
-from expenses_processor import ExpenseAnalysis
+from expenses_processor import ExpenseAnalysis, AccountType
+from transactions import BankTransaction, VisaMaxTransaction,Transaction
 
 class ExpenseDashboard:
     def __init__(self, expense_analysis: ExpenseAnalysis):
@@ -68,44 +69,6 @@ class ExpenseDashboard:
         # Display the plot in Streamlit
         st.pyplot(fig)
 
-    def display_monthly_expenses_by_category(self):
-        st.header("Monthly Expenses by Category")
-        monthly_expenses = self.expense_analysis.monthly_expenses_by_category().reset_index()
-
-        # Filter out categories where total expenses are over 1000
-        monthly_expenses = monthly_expenses[monthly_expenses['expense'] > 1000]
-
-        # Format the 'date' column to only show year and month
-        monthly_expenses['date'] = monthly_expenses['date'].dt.strftime('%m/%Y')
-
-        # Rename the columns for better readability
-        monthly_expenses.columns = ['Month', 'Category', 'Expense Total']
-
-        # Sort the data by month
-        monthly_expenses.sort_values('Month', inplace=True)
-         # Add a separator row between different months
-        last_month = None
-        separator_rows = []
-        for i, row in monthly_expenses.iterrows():
-            if last_month != row['Month']:
-                if last_month is not None:
-                    # Add a separator row
-                    separator_rows.append({'Month': '', 'Category': '', 'Expense Total': ''})
-                last_month = row['Month']
-            separator_rows.append(row.to_dict())
-
-        # Create a new DataFrame with the separator rows
-        monthly_expenses = pd.DataFrame(separator_rows)
-
-        # Display the data table
-        st.table(monthly_expenses)
-
-    def display_category_month_by_month(self):
-        category = st.selectbox("Select a category", self.expense_analysis.all_generic_expenses['category'].unique())
-        st.header(f"Month by Month Expenses for {category}")
-        category_monthly_expenses = self.expense_analysis.category_month_by_month(category).reset_index()
-        st.write(category_monthly_expenses)
-
     def display_expenses_for_month(self):
         # Use Streamlit's date_input to select a year and month
         selected_date = st.date_input("Select a year and month", value=pd.to_datetime("today"), min_value=None, max_value=None, key=None)
@@ -113,4 +76,93 @@ class ExpenseDashboard:
         efmd = ExpenseForMonthDisplay() 
         efmd.display_expenses_for_month(self.expense_analysis, year, month)
 
-       
+    def display_monthly_expenses_by_category(self):
+        st.header("Monthly Expenses by Category")
+
+        # Dropdown to select category
+        categories = self.expense_analysis.get_categories()  # Assuming this method exists and returns a list of categories
+        selected_category = st.selectbox("Select a Category", categories)
+
+        # Radio buttons to choose between Bank or Visa
+        account_type = st.radio("Choose Account Type", ( 'Visa Max','Bank'))
+        if account_type == 'Visa Max':
+            account_type = AccountType.VISA_MAX
+        else:
+            account_type = AccountType.BANK
+
+        # Fetching expenses and gains data for the selected category and account type
+        expenses_per_month, gains_per_month = self.expense_analysis.get_monthly_expenses_and_gains_by_category(selected_category, account_type)
+
+        # Expenses Data
+        expenses_data = pd.DataFrame({'Month': expenses_per_month.index, 'Expenses': expenses_per_month.values})
+        expenses_data['Month'] = pd.to_datetime(expenses_data['Month']).dt.strftime('%Y-%m')
+        expenses_data.sort_values(by='Month', inplace=True)
+        st.subheader(f"Monthly Expenses for {selected_category}")
+        st.bar_chart(expenses_data.set_index('Month'))
+
+        # Gains Data
+        gains_data = pd.DataFrame({'Month': gains_per_month.index, 'Gains': gains_per_month.values})
+        gains_data['Month'] = pd.to_datetime(gains_data['Month']).dt.strftime('%Y-%m')
+        gains_data.sort_values(by='Month', inplace=True)
+        st.subheader(f"Monthly Gains for {selected_category}")
+        st.bar_chart(gains_data.set_index('Month'))
+
+    def display_detailed_transactions(self):
+        st.header("Detailed Transactions")
+
+        # Dropdown to select category
+        categories = self.expense_analysis.get_categories()
+        selected_category = st.selectbox("Select a Category", categories)
+
+        # Radio buttons to choose between Bank or Visa
+        account_type = st.radio("Choose Account Type", ('Bank', 'Visa Max'))
+        account_type_enum = AccountType.VISA_MAX if account_type == 'Visa Max' else AccountType.BANK
+
+        # Use Streamlit's date_input to select a year and month
+        selected_date = st.date_input("Select a year and month", value=pd.to_datetime("today"))
+        year, month = selected_date.year, selected_date.month
+
+        # Fetching detailed transactions
+        detailed_transactions = self.expense_analysis.get_detailed_expenses(account_type_enum, year, month, selected_category)
+
+        # Sorting transactions by amount in the expense or gain
+        detailed_transactions.sort(key=lambda x: max(x.get_expense_sum(), x.get_gains_sum()), reverse=True)
+
+        # Preparing data for display based on account type
+        data = []
+        match account_type_enum:
+            case AccountType.BANK:
+                for transaction in detailed_transactions:
+                    data.append([
+                        transaction.get_transaction_date().strftime('%Y-%m-%d'),
+                        transaction.get_category().name,
+                        transaction.get_expense_sum(),
+                        transaction.get_gains_sum(),
+                        transaction.company,
+                 
+                    ])
+                columns = ['Date', 'Category', 'Expense Sum', 'Gains Sum', 'Company']
+            
+            case AccountType.VISA_MAX:
+                for transaction in detailed_transactions:
+                    data.append([
+                        transaction.get_transaction_date().strftime('%Y-%m-%d'),
+                        transaction.get_category().name,
+                        transaction.get_expense_sum(),
+                        transaction.get_gains_sum(),
+                        transaction.company,
+                        transaction.visa_card_number,
+                        transaction.coin.name,
+                        transaction.normalized_expense_sum,
+                        transaction.visa_max_category,
+                        transaction.sheet_title
+                    ])
+                columns = [
+                    'Date', 'Category', 'Expense Sum', 'Gains Sum', 'Company', 
+                    'Visa Card Number', 'Coin Type', 'Normalized Expense Sum', 
+                    'Visa Max Category', 'Sheet Title'
+                ]
+
+        # Displaying transactions in a table
+        df = pd.DataFrame(data, columns=columns)
+        st.table(df)
