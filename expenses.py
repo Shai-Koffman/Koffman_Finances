@@ -2,7 +2,7 @@ import datetime
 from currency import CoinType
 from categories import Categories
 from builtins import NotImplementedError
-class Expense(object):
+class Transaction(object):
     def __init__(self):
         pass
 
@@ -14,12 +14,16 @@ class Expense(object):
     
     def get_expense_sum(self) -> int:
         raise NotImplementedError("This method should be implemented in a subclass")
+    
+    def get_gains_sum(self) -> int:
+        raise NotImplementedError("This method should be implemented in a subclass")
         
-class BankExpense(Expense):
-    def __init__(self, date: datetime.datetime, company: str, category: Categories, expense: float):
+class BankTransaction(Transaction):
+    def __init__(self, date: datetime.datetime, company: str, category: Categories, expense: float, gains: float):
         self.date = date
         self.company = company
         self.expense = expense
+        self.gains = gains
         self.category = category
     
     def __str__(self):
@@ -28,8 +32,9 @@ class BankExpense(Expense):
                 "  month = {1}\n"
                 "  company = {2}\n"
                 "  expense = {3}\n"
-                "  category = {4}\n"
-                .format(self.date, self.date.month, self.company, self.expense, self.category)) 
+                "  gains = {4}\n"
+                "  category = {5}\n"
+                .format(self.date, self.date.month, self.company, self.expense, self.gains, self.category)) 
     
     def get_category(self) -> Categories:
         return self.category
@@ -37,18 +42,21 @@ class BankExpense(Expense):
         return self.date
     def get_expense_sum(self) -> int:
         return self.expense
+    def get_gains_sum(self) -> int:
+        return self.gains
 
 
 
-class VisaExpense(Expense):
+class VisaTransaction(Transaction):
     
-    def __init__(self, sheet_title: str, company: str, known_category: Categories, visa_max_category: str, visa_card_number: str, expense_sum: int, coin: CoinType, expense_date: datetime.datetime):
+    def __init__(self, sheet_title: str, company: str, known_category: Categories, visa_max_category: str, visa_card_number: str, expense_sum: int,gain_sum, coin: CoinType, expense_date: datetime.datetime):
         self.sheet_title = sheet_title
         self.company = company
         self.known_category = known_category
         self.visa_max_category = visa_max_category
         self.visa_card_number = visa_card_number
         self.expense_sum = expense_sum
+        self.gain_sum = gain_sum
         self.coin = coin
         self.expense_date = expense_date
         self.normalized_expense_sum = CoinType.normalize_expense_sum(self.expense_sum, self.coin)
@@ -74,5 +82,8 @@ class VisaExpense(Expense):
     
     def get_expense_sum(self) -> int:
         return self.normalized_expense_sum
+    
+    def get_gains_sum(self) -> int:
+        return self.gain_sum
 
 

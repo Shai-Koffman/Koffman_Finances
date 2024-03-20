@@ -1,5 +1,5 @@
 from categories import Categories
-from expenses import BankExpense, Expense,VisaExpense
+from expenses import BankTransaction, Transaction,VisaTransaction
 from csv_output import save_to_csv
 from database import save_to_database
 from typing import List,Tuple
@@ -8,35 +8,55 @@ import pandas as pd
 
 
 class ExpenseAnalysis:
-    def __init__(self, bank_expenses: List[BankExpense], visa_expenses: List[VisaExpense]):
-        columns = ['date', 'category', 'expense']
-        allexps :List[Expense] = bank_expenses + visa_expenses
-        self.visa_expenses_pd = pd.DataFrame( vars(exp) for exp in visa_expenses)
-        self.bank_expenses_pd = pd.DataFrame( vars(exp) for exp in bank_expenses)
-        self.all_generic_expenses = pd.DataFrame([(exp.get_transaction_date(),
-                                       exp.get_category(),
-                                       exp.get_expense_sum()) for exp in allexps], columns=columns)
+    def __init__(self, bank_expenses: List[BankTransaction], visa_expenses: List[VisaTransaction]):
+        columns = ['date', 'category', 'expense', 'gains']
+        # For bank expenses
+        self.bank_expenses_pd = pd.DataFrame([(exp.get_transaction_date(),
+                                               exp.get_category(),
+                                               exp.get_expense_sum(),
+                                               exp.get_gains_sum()) for exp in bank_expenses], columns=columns)
+        # For visa expenses
+        self.visa_expenses_pd = pd.DataFrame([(exp.get_transaction_date(),
+                                               exp.get_category(),
+                                               exp.get_expense_sum(),
+                                               exp.get_gains_sum()) for exp in visa_expenses], columns=columns)
         
-        self.all_generic_expenses['date'] = pd.to_datetime(self.all_generic_expenses['date'])
-        self.all_generic_expenses.set_index('date', inplace=True)
-
-    def monthly_expenses_by_category(self) -> pd.DataFrame:
-        return self.all_generic_expenses.groupby([pd.Grouper(freq='ME'), 'category'])['expense'].sum()
-
-    def category_month_by_month(self, category: Categories) -> pd.Series:
-        return self.all_generic_expenses[self.all_generic_expenses['category'] == category].groupby(pd.Grouper(freq='ME'))['expense'].sum()
-
-    def yearly_expenses_by_category(self) -> pd.DataFrame:
-        return self.all_generic_expenses.groupby([pd.Grouper(freq='YE'), 'category'])['expense'].sum()
+     
         
+        # Also convert 'date' column to datetime for bank_expenses_pd and visa_expenses_pd, and set as index
+        self.bank_expenses_pd['date'] = pd.to_datetime(self.bank_expenses_pd['date'])
+        self.bank_expenses_pd.set_index('date', inplace=True)
+        self.visa_expenses_pd['date'] = pd.to_datetime(self.visa_expenses_pd['date'])
+        self.visa_expenses_pd.set_index('date', inplace=True)
+
+    def bank_monthly_expenses(self, year: int, month: int) -> pd.Series:
+        bank_dates = self.bank_expenses_pd.index
+        filtered_expenses = self.bank_expenses_pd[(bank_dates.year == year) & (bank_dates.month == month)]
+        return filtered_expenses.groupby('category')['expense'].sum()
+    
+    def bank_monthly_gains(self, year: int, month: int) -> pd.Series:
+        bank_dates = self.bank_expenses_pd.index
+        filtered_gains = self.bank_expenses_pd[(bank_dates.year == year) & (bank_dates.month == month)]
+        return filtered_gains.groupby('category')['gains'].sum()
+
+
+    def visa_monthly_gains(self, year: int, month: int) -> pd.Series:
+        visa_dates = self.visa_expenses_pd.index
+        filtered_gains = self.visa_expenses_pd[(visa_dates.year == year) & (visa_dates.month == month)]
+        return filtered_gains.groupby('category')['gains'].sum()
+    
+    def visa_monthly_expenses(self, year: int, month: int) -> pd.Series:
+        visa_dates = self.visa_expenses_pd.index
+        filtered_expenses = self.visa_expenses_pd[(visa_dates.year == year) & (visa_dates.month == month)]
+        return filtered_expenses.groupby('category')['expense'].sum()
+
+
     #returns a tuple of DataFrame lists, one for bank gains total per month and one for bank expenses total per month.
     def bank_total_gains_and_expenses_per_month(self) ->Tuple[pd.Series, pd.Series]:
         bank_expenses = self.bank_expenses_pd.copy()
-        bank_expenses['date'] = pd.to_datetime(bank_expenses['date'])
-        bank_expenses.set_index('date', inplace=True)
         
-        gains_per_month = bank_expenses[bank_expenses['expense'] < 0].groupby(pd.Grouper(freq='ME'))['expense'].sum()
-        expenses_per_month = bank_expenses[bank_expenses['expense'] > 0].groupby(pd.Grouper(freq='ME'))['expense'].sum()
+        gains_per_month = bank_expenses.groupby(pd.Grouper(freq='ME'))['gains'].sum()
+        expenses_per_month = bank_expenses.groupby(pd.Grouper(freq='ME'))['expense'].sum()
         # Create a common date range for both gains and expenses
         all_dates = gains_per_month.index.union(expenses_per_month.index)
         # Reindex gains and expenses to the common date range and fill missing values with 0
@@ -47,14 +67,14 @@ class ExpenseAnalysis:
     
 
 
-def process_expenses(visa_max_expenses: Expense, bank_expenses: Expense, debug : bool, month_input: int, output_file: str, save_to_db: bool) -> None:
+def process_expenses(visa_max_expenses: Transaction, bank_expenses: Transaction, debug : bool, month_input: int, output_file: str, save_to_db: bool) -> None:
     full_mappings = build_full_mappings(bank_expenses+visa_max_expenses, debug, month_input)
     if save_to_db:
         save_to_database(full_mappings)
     if output_file:
         save_to_csv(full_mappings, output_file)
 
-def build_full_mappings(expenses: Expense, debug : bool, month_input: int) -> dict:
+def build_full_mappings(expenses: Transaction, debug : bool, month_input: int) -> dict:
     grouped_expenses = {}
     for month in range(1, 13):
         grouped_expenses[month] = {}
