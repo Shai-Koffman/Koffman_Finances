@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import inspect
+import matplotlib.pyplot as plt
 from display_expense_for_month import ExpenseForMonthDisplay
 from expenses_processor import ExpenseAnalysis
 
@@ -45,6 +46,24 @@ class ExpenseDashboard:
         gains_data.sort_values(by='Month', inplace=True)
         st.subheader("Monthly Gains")
         st.bar_chart(gains_data.set_index('Month'))
+
+        # Difference Data
+        difference_data = pd.DataFrame({
+            'Month': expenses_data['Month'],
+            'Difference': gains_data['Gains'].values - expenses_data['Expenses'].values
+        })
+        difference_data.sort_values(by='Month', inplace=True)
+
+        # Plotting the difference as a bar chart with colors based on value
+        fig, ax = plt.subplots()
+        ax.bar(difference_data['Month'], difference_data['Difference'], color=['green' if x > 0 else 'red' for x in difference_data['Difference']])
+        ax.axhline(0, color='black', lw=2)  # X-axis
+        plt.xticks(rotation=45)
+        plt.ylabel('Difference (Gains - Expenses)')
+        plt.title('Monthly Difference in Gains and Expenses')
+
+        # Display the plot in Streamlit
+        st.pyplot(fig)
 
     def display_monthly_expenses_by_category(self):
         st.header("Monthly Expenses by Category")
