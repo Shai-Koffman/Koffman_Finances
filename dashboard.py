@@ -1,10 +1,8 @@
 import streamlit as st
 import pandas as pd
-import inspect
 import matplotlib.pyplot as plt
 from display_expense_for_month import ExpenseForMonthDisplay
 from expenses_processor import ExpenseAnalysis, AccountType
-from transactions import BankTransaction, VisaMaxTransaction,Transaction
 
 class ExpenseDashboard:
     def __init__(self, expense_analysis: ExpenseAnalysis):
@@ -13,8 +11,13 @@ class ExpenseDashboard:
     def run(self):
         st.title("Koffman Financial Dashboard")
 
-        # Dynamically get display methods
-        display_methods = [method_name for method_name, method in inspect.getmembers(self, predicate=inspect.ismethod) if method_name.startswith('display_')]
+        # Manually list display methods in the desired order
+        display_methods = [
+            'display_bank_monthly_expenses_vs_gains',
+            'display_expenses_for_month',
+            'display_monthly_expenses_by_category',
+            'display_detailed_transactions'
+        ]
 
         # Sidebar menu for navigation, with "Monthly Expenses vs Gains" as the default selection
         menu_options = [method.replace('display_', '').replace('_', ' ').title() for method in display_methods]
@@ -37,19 +40,31 @@ class ExpenseDashboard:
         # Calculate monthly expenses and gains
         gains_per_month, expenses_per_month = self.expense_analysis.bank_total_gains_and_expenses_per_month(exclude_transfers=exclude_transfers)
         
+        # Generate a list of unique months from the data
+        all_months = pd.to_datetime(expenses_per_month.index.union(gains_per_month.index)).strftime('%Y-%m').unique()
+        excluded_months = st.multiselect('Select months to exclude', all_months)
+
         # Expenses Data
         expenses_data = pd.DataFrame({'Month': expenses_per_month.index, 'Expenses': expenses_per_month.values})
         expenses_data['Month'] = pd.to_datetime(expenses_data['Month']).dt.strftime('%Y-%m')
+        expenses_data = expenses_data[~expenses_data['Month'].isin(excluded_months)]  # Exclude selected months
         expenses_data.sort_values(by='Month', inplace=True)
         st.subheader("Monthly Expenses")
         st.bar_chart(expenses_data.set_index('Month'))
+        # Calculate and display average expenses 
+        average_expenses = expenses_data['Expenses'].mean()
+        st.write(f"Average Monthly Expenses: {average_expenses:.2f}")
 
         # Gains Data
         gains_data = pd.DataFrame({'Month': gains_per_month.index, 'Gains': gains_per_month.values})
         gains_data['Month'] = pd.to_datetime(gains_data['Month']).dt.strftime('%Y-%m')
+        gains_data = gains_data[~gains_data['Month'].isin(excluded_months)]  # Exclude selected months
         gains_data.sort_values(by='Month', inplace=True)
         st.subheader("Monthly Gains")
         st.bar_chart(gains_data.set_index('Month'))
+        # Calculate and display average gains
+        average_gains = gains_data['Gains'].mean()
+        st.write(f"Average Monthly Gains: {average_gains:.2f}")
 
         # Difference Data
         difference_data = pd.DataFrame({
@@ -139,10 +154,10 @@ class ExpenseDashboard:
                         transaction.get_expense_sum(),
                         transaction.get_gains_sum(),
                         transaction.company,
-                 
+                        # BankTransaction specific fields here (placeholders for VisaMaxTransaction fields)
                     ])
                 columns = ['Date', 'Category', 'Expense Sum', 'Gains Sum', 'Company']
-            
+        
             case AccountType.VISA_MAX:
                 for transaction in detailed_transactions:
                     data.append([
