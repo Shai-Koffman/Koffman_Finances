@@ -1,38 +1,44 @@
 import streamlit as st
 import pandas as pd
+import inspect
 from expenses_processor import ExpenseAnalysis
-
 
 class ExpenseDashboard:
     def __init__(self, expense_analysis: ExpenseAnalysis):
         self.expense_analysis = expense_analysis
 
-
     def run(self):
-        st.title("Koffman Household financial Dashboard")
-        self.display_monthly_expenses_vs_gains()
-        # self.display_monthly_expenses_by_category()
-        # self.display_category_month_by_month()
-        # self.display_yearly_expenses_by_category()
-        # self.display_expenses_by_date_range()
+        st.title("Koffman Financial Dashboard")
 
-    def display_monthly_expenses_vs_gains(self):
-        st.header("Monthly Expenses vs Gains")
+        # Dynamically get display methods
+        display_methods = [method_name for method_name, method in inspect.getmembers(self, predicate=inspect.ismethod) if method_name.startswith('display_')]
+
+        # Sidebar menu for navigation, with "Monthly Expenses vs Gains" as the default selection
+        menu_options = [method.replace('display_', '').replace('_', ' ').title() for method in display_methods]
+        default_index = menu_options.index("Bank Monthly Expenses Vs Gains")  # Assuming this is the exact method name after title formatting
+        selection = st.sidebar.selectbox("Menu", menu_options, index=default_index)
+
+        # Mapping selection to method call
+        selected_method_name = display_methods[menu_options.index(selection)]
+        selected_method = getattr(self, selected_method_name)
+        
+        # Execute the selected method
+        selected_method()
+
+    def display_bank_monthly_expenses_vs_gains(self):
+        st.header("Bank Monthly Expenses vs Gains")
 
         # Calculate monthly expenses and gains
-        gains_per_month, expenses_per_month = self.expense_analysis.total_gains_and_expenses_per_month()
+        gains_per_month, expenses_per_month = self.expense_analysis.bank_total_gains_and_expenses_per_month()
         monthly_data = pd.DataFrame({'Month': expenses_per_month.index, 'Expenses': expenses_per_month.values, 'Gains': -gains_per_month.values})
 
-        # Format the 'Month' column to only show year and month
-        monthly_data['Month'] = monthly_data['Month'].dt.strftime('%m/%Y')
+        # Format the 'Month' column to only show year and month and sort chronologically
+        monthly_data['Month'] = pd.to_datetime(monthly_data['Month']).dt.strftime('%Y-%m')
+        monthly_data.sort_values(by='Month', inplace=True)
 
         # Create a bar chart using Streamlit's native functionality
         st.bar_chart(monthly_data.set_index('Month'))
 
-
-
-
-    #The method below should display the monthly expenses in a pie chart of categories per month.
     def display_monthly_expenses_by_category(self):
         st.header("Monthly Expenses by Category")
         monthly_expenses = self.expense_analysis.monthly_expenses_by_category().reset_index()
