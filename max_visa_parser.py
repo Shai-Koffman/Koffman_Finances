@@ -3,7 +3,7 @@
 
 from dateutil.parser import parse
 import openpyxl
-from expenses import VisaTransaction
+from expenses import VisaMaxTransaction
 from currency import CoinType
 from categories import get_category
 
@@ -38,7 +38,7 @@ def parse_visa_max_file(filename):
             expense_date_cell_value = sheet.cell(row, 10).value
             parsedDate = parse(expense_date_cell_value, dayfirst=True)  
             
-            item = VisaTransaction(sheet_title=sheet_title,
+            item = VisaMaxTransaction(sheet_title=sheet_title,
                                 company=company,
                                 known_category=known_category,
                                 visa_max_category=visa_max_category,

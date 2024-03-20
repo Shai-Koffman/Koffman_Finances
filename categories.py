@@ -29,7 +29,8 @@ class Categories(Enum):
     PRESENTS = auto()
     INTERNET_SERVICES_AND_SHOPPING = auto()
     ABROAD_EXPENSES = auto()
-    VISA = auto()
+    VISA_MAX = auto()
+    VISA_ISRACARD = auto()
     CHECKS = auto()
     BANK_AMLOT = auto()
     HOME_RELATED = auto()
@@ -67,7 +68,8 @@ class Categories(Enum):
 # Categorizations - list of tuples, each tuple contains a category and a list of strings that are the names of the expenses that belong to this category
 Categorizations = [
             (Categories.BANK_AMLOT, ['עמל.ערוץ יש','עמ.העברת','דמי ניהול','עמ.יבוא']),
-            (Categories.VISA,['מקס','ישראכרט'] ),
+            (Categories.VISA_MAX,['מקס'] ),
+            (Categories.VISA_ISRACARD, ['ישראכרט'] ),
             (Categories.SALARIES,['העברת משכורת','מ.חינוך-משכו-י']),
             (Categories.INCOMING_TRANSFERS,['הפועלים-ביט','מב. הפועלים-י','מהבינלאומי ס-י','מסיטיבנק ס.-י','טריא קהילה פ-י','מפייבוקס שלי-י','משיכת חיסכון','רבית זכות','מס-הכנסה החז-י','זיכוי עמ.הישיר','קצבת ילדים-י']),
             (Categories.BANK_TRANSFERS_AND_MONEY_TRANSFERS,['העברת מט"ח 645','המרה אינטרנט','העברה תוך יומי','מכירת ני"ע','תיקון','הע. אינט700','העברה דיגי700','תש.ביבוא יש645','המרה-אינטרנט','קניה-אינטרנט','רשויות אינטרנט']),
