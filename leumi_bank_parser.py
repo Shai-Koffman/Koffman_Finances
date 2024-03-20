@@ -1,5 +1,5 @@
 
-from math import exp
+
 from xlrd  import open_workbook  
 from transactions import BankTransaction  
 from categories import get_category
