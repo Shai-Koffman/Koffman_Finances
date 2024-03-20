@@ -30,14 +30,20 @@ class ExpenseDashboard:
 
         # Calculate monthly expenses and gains
         gains_per_month, expenses_per_month = self.expense_analysis.bank_total_gains_and_expenses_per_month()
-        monthly_data = pd.DataFrame({'Month': expenses_per_month.index, 'Expenses': expenses_per_month.values, 'Gains': -gains_per_month.values})
+        
+        # Expenses Data
+        expenses_data = pd.DataFrame({'Month': expenses_per_month.index, 'Expenses': expenses_per_month.values})
+        expenses_data['Month'] = pd.to_datetime(expenses_data['Month']).dt.strftime('%Y-%m')
+        expenses_data.sort_values(by='Month', inplace=True)
+        st.subheader("Monthly Expenses")
+        st.bar_chart(expenses_data.set_index('Month'))
 
-        # Format the 'Month' column to only show year and month and sort chronologically
-        monthly_data['Month'] = pd.to_datetime(monthly_data['Month']).dt.strftime('%Y-%m')
-        monthly_data.sort_values(by='Month', inplace=True)
-
-        # Create a bar chart using Streamlit's native functionality
-        st.bar_chart(monthly_data.set_index('Month'))
+        # Gains Data
+        gains_data = pd.DataFrame({'Month': gains_per_month.index, 'Gains': gains_per_month.values})
+        gains_data['Month'] = pd.to_datetime(gains_data['Month']).dt.strftime('%Y-%m')
+        gains_data.sort_values(by='Month', inplace=True)
+        st.subheader("Monthly Gains")
+        st.bar_chart(gains_data.set_index('Month'))
 
     def display_monthly_expenses_by_category(self):
         st.header("Monthly Expenses by Category")
@@ -77,17 +83,55 @@ class ExpenseDashboard:
         category_monthly_expenses = self.expense_analysis.category_month_by_month(category).reset_index()
         st.write(category_monthly_expenses)
 
-    def display_yearly_expenses_by_category(self):
-        st.header("Yearly Expenses by Category")
-        yearly_expenses = self.expense_analysis.yearly_expenses_by_category().reset_index()
-        st.write(yearly_expenses)
+    def display_expenses_for_month(self):
+        # Use Streamlit's date_input to select a year and month
+        selected_date = st.date_input("Select a year and month", value=pd.to_datetime("today"), min_value=None, max_value=None, key=None)
+        year, month = selected_date.year, selected_date.month
 
-    def display_expenses_by_date_range(self):
-        start_date = st.date_input("Start Date", value=self.expense_analysis.all_generic_expenses.index.min())
-        end_date = st.date_input("End Date", value=self.expense_analysis.all_generic_expenses.index.max())
-        filtered_expenses = self.expense_analysis.all_generic_expenses.loc[start_date:end_date]
+        st.header(f"Expenses and Gains for {selected_date.strftime('%B %Y')}")
 
-        st.header(f"Monthly Expenses by Category ({start_date} - {end_date})")
-        monthly_expenses_filtered = filtered_expenses.groupby([pd.Grouper(freq='ME'), 'category'])['expense'].sum().reset_index()
-        st.write(monthly_expenses_filtered)
+        # Bank expenses and gains
+        st.subheader("Bank Expenses and Gains")
+        bank_expenses = self.expense_analysis.bank_monthly_expenses(year, month).round().astype(int)
+        bank_gains = self.expense_analysis.bank_monthly_gains(year, month).round().astype(int)
 
+        # Filter out 0 expenses
+        bank_expenses = bank_expenses[bank_expenses > 0]
+        bank_gains = bank_gains[bank_gains > 0]
+
+        if not bank_expenses.empty:
+            st.write("Expenses:")
+            # Sort by expense descending and format with Shekel sign
+            st.table(bank_expenses.reset_index().sort_values('expense', ascending=False).style.format({"expense": "₪{:,}"}))
+        else:
+            st.write("No bank expenses for this month.")
+
+        if not bank_gains.empty:
+            st.write("Gains:")
+            # Sort by gains ascending and format with Shekel sign
+            st.table(bank_gains.reset_index().sort_values('gains').style.format({"gains": "₪{:,}"}))  
+        else:
+            st.write("No bank gains for this month.")
+
+        # Visa expenses and gains
+        st.subheader("Visa Expenses and Gains")
+        visa_expenses = self.expense_analysis.visa_monthly_expenses(year, month).round().astype(int)
+        visa_gains = self.expense_analysis.visa_monthly_gains(year, month).round().astype(int)
+
+        # Filter out 0 expenses
+        visa_expenses = visa_expenses[visa_expenses > 0]
+        visa_gains = visa_gains[visa_gains > 0]
+
+        if not visa_expenses.empty:
+            st.write("Expenses:")
+            # Sort by expense descending and format with Shekel sign
+            st.table(visa_expenses.reset_index().sort_values('expense', ascending=False).style.format({"expense": "₪{:,}"}))
+        else:
+            st.write("No Visa expenses for this month.")
+
+        if not visa_gains.empty:
+            st.write("Gains:")
+            # Sort by gains ascending and format with Shekel sign
+            st.table(visa_gains.reset_index().sort_values('gains').style.format({"gains": "₪{:,}"}))  
+        else:
+            st.write("No Visa gains for this month.")
