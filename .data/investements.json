@@ -7,7 +7,9 @@
         "amount": 170402.0,
         "currency": "ILS",
         "last_update_date": "20-03-2024",
-        "itd": 0.0,
+        "initial_investement": 0.0,
+        "initial_investement_currency": "ILS",
+        "provided_anual_interest_rate": 0.0,
         "itd_date": "20-03-2024"
       },
 
@@ -17,7 +19,10 @@
         "amount": 1838.0,
         "currency": "USD",
         "last_update_date": "20-03-2024",
-        "itd": 0.0,
+        "initial_investement": 0.0,
+        "initial_investement_currency": "USD",
+        "provided_anual_interest_rate": 0.0,
+        
         "itd_date": "20-03-2024"
       },
 
@@ -28,7 +33,9 @@
         "amount": 502788.0,
         "currency": "ILS",
         "last_update_date": "20-03-2024",
-        "itd": 1.58,
+        "initial_investement": 600000.0,
+        "initial_investement_currency": "ILS",
+        "provided_anual_interest_rate": 4.5,
         "itd_date": "12-12-2023"
       },
       {
@@ -38,7 +45,9 @@
         "amount": 1057511.0,
         "currency": "ILS",
         "last_update_date": "20-03-2024",
-        "itd": 14.92,
+        "initial_investement": 250000.0,
+        "initial_investement_currency": "USD",
+        "provided_anual_interest_rate": 0.0,
         "itd_date" : "1-06-2023"
       },
       {
@@ -48,8 +57,10 @@
         "amount": 985908.0,
         "currency": "ILS",
         "last_update_date": "20-03-2024",
-        "itd": 7.14,
-        "itd_date": "1-07-2021"
+        "initial_investement": 250000.0,
+        "initial_investement_currency": "USD",
+        "provided_anual_interest_rate": 0.0,
+        "itd_date": "01-07-2021"
       },
 
       {
@@ -57,8 +68,10 @@
         "url": "https://portal.roeto.co.il/karni/dashboard",
         "amount": 1095000.0,
         "currency": "ILS",
-        "last_update_date": "30-09-23",
-        "itd": 19.82,
+        "last_update_date": "30-09-2023",
+        "initial_investement": 250000.0,
+        "initial_investement_currency": "USD",
+        "provided_anual_interest_rate": 0.0,
         "itd_date": "1-07-2021"
       },
 
@@ -68,16 +81,20 @@
         "amount": 724294.0,
         "currency": "ILS",
         "last_update_date": "20-03-2024",
-        "itd": 0.0,
-        "itd_date": "20-03-2024"
+        "initial_investement": 198000.0,
+        "initial_investement_currency": "USD",
+        "provided_anual_interest_rate": 0.0,
+        "itd_date": "01-07-2021"
       },
       {
         "name": "Electra Alemif",
         "url": "http://portal.roeto.co.il/karni/dashboard",
-        "amount": 874350.0,
-        "currency": "ILS",
+        "amount": 217500.0,
+        "currency": "USD",
         "last_update_date": "30-09-2023",
-        "itd": 10.0,
+        "initial_investement": 198801.0,
+        "initial_investement_currency": "USD",
+        "provided_anual_interest_rate": 0.0,
         "itd_date": "14-03-2023"
       },
       {
@@ -85,9 +102,11 @@
         "url": "http://portal.roeto.co.il/karni/dashboard",
         "amount": 327041.0,
         "currency": "ILS",
-        "last_update_date": "29-02-2024",
-        "itd": 10.0,
-        "itd_date": "03-07-2022"
+        "last_update_date": "27-02-2024",
+        "initial_investement": 40000.0,
+        "initial_investement_currency": "ILS",
+        "provided_anual_interest_rate": 10,  
+        "itd_date": "14-03-2023"
       },
 
       {
@@ -96,7 +115,9 @@
         "amount" : 91323.0,
         "currency" : "ILS",
         "last_update_date" : "20-03-2024",
-        "itd" : 57.0,
+        "initial_investement": 58000.0,
+        "initial_investement_currency": "ILS",
+        "provided_anual_interest_rate": 0.0,
         "itd_date" : "01-06-2014"
       },
       {
@@ -105,7 +126,9 @@
         "amount" : 99804.0,
         "currency" : "ILS",
         "last_update_date" : "20-03-2024",
-        "itd" : 72.0,
+        "initial_investement": 58000.0,
+        "initial_investement_currency": "ILS",
+        "provided_anual_interest_rate": 0.0,
         "itd_date" : "01-06-2014"
       },
       {
@@ -114,7 +137,9 @@
         "amount" : 62187.0,
         "currency" : "ILS",
         "last_update_date" : "20-03-2024",
-        "itd" : 75.0,
+        "initial_investement": 35500.0,
+        "initial_investement_currency": "ILS",
+        "provided_anual_interest_rate": 0.0,
         "itd_date" : "01-03-2018"
       },
       {
@@ -123,8 +148,10 @@
         "amount" : 3000000.0,
         "currency" : "ILS",
         "last_update_date" : "20-03-2024",
-        "itd" : 50.0,
-        "itd_date" : "01-08-2029"
+        "initial_investement": 0.0,
+        "initial_investement_currency": "ILS",
+        "provided_anual_interest_rate": 18,
+        "itd_date" : "01-03-2018"
       }
      
     ]
