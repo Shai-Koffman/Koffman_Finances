@@ -190,11 +190,13 @@ class Dashboard:
         st.header("Invested Money Distribution")
         
         # Fetch investment data as a DataFrame using the existing investements_processor instance
-        investments_df = self.investements_processor.get_investements_series()
-
-        # Display investments in a table
-        st.table(investments_df)
+        investments_df = self.investements_processor.get_investements_df()
+        #round the calculated_historical_annual_interest_rate to 2 decimal points
+        investments_df['calculated_historical_annual_interest_rate'] = investments_df['calculated_historical_annual_interest_rate'].round(2)
+        # Round numbers in the 'amount' column to full numbers
+        investments_df['amount'] = investments_df['amount'].round()
+        st.dataframe(investments_df, width=700)  # Adjust the width as needed
 
         # Calculate and display the total amount invested
         total_invested = investments_df['amount'].sum()
-        st.markdown(f"**Total Amount Invested:** ${total_invested:,.2f}")
+        st.markdown(f"**Total Amount Invested:** {total_invested:,.0f} NIS")
