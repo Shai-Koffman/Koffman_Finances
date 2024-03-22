@@ -1,3 +1,6 @@
+import plotly.graph_objects as go
+import streamlit as st
+import pandas as pd
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -15,28 +18,34 @@ class Dashboard:
     def run(self):
         st.title("Koffman Financial Dashboard")
 
-        # Manually list display methods in the desired order
-        display_methods = [
-            'display_bank_monthly_expenses_vs_gains',
-            'display_expenses_for_month',
-            'display_monthly_expenses_by_category',
-            'display_detailed_transactions',
-            'display_invested_money_distribution',
-            'display_projected_financials'
+        # Register display methods using a decorator
+        self.display_methods = [
+            self.display_bank_monthly_expenses_vs_gains,
+            self.display_expenses_for_month,
+            self.display_monthly_expenses_by_category,
+            self.display_detailed_transactions,
+            self.display_invested_money_distribution,
+            self.display_projected_financials
         ]
 
         # Sidebar menu for navigation, with "Monthly Expenses vs Gains" as the default selection
-        menu_options = [method.replace('display_', '').replace('_', ' ').title() for method in display_methods]
+        menu_options = [method.__name__.replace('display_', '').replace('_', ' ').title() for method in self.display_methods]
         default_index = menu_options.index("Bank Monthly Expenses Vs Gains")  # Assuming this is the exact method name after title formatting
         selection = st.sidebar.selectbox("Menu", menu_options, index=default_index)
 
         # Mapping selection to method call
-        selected_method_name = display_methods[menu_options.index(selection)]
-        selected_method = getattr(self, selected_method_name)
+        selected_method = next((method for method in self.display_methods if method.__name__ == f"display_{selection.replace(' ', '_').lower()}"), None)
         
         # Execute the selected method
-        selected_method()
+        if selected_method:
+            selected_method()
 
+    @staticmethod
+    def display_method(func):
+        func.display_method = True
+        return func
+
+    @display_method
     def display_bank_monthly_expenses_vs_gains(self):
         st.header("Bank Monthly Expenses vs Gains")
 
@@ -80,16 +89,13 @@ class Dashboard:
         difference_data.sort_values(by='Month', inplace=True)
 
         # Plotting the difference as a bar chart with colors based on value
-        fig, ax = plt.subplots()
-        ax.bar(difference_data['Month'], difference_data['Difference'], color=['green' if x > 0 else 'red' for x in difference_data['Difference']])
-        ax.axhline(0, color='black', lw=2)  # X-axis
-        plt.xticks(rotation=45)
-        plt.ylabel('Difference (Gains - Expenses)')
-        plt.title('Monthly Difference in Gains and Expenses')
+        fig = go.Figure()
+        fig.add_trace(go.Bar(x=difference_data['Month'], y=difference_data['Difference'], marker_color=['green' if x > 0 else 'red' for x in difference_data['Difference']]))
+        fig.add_shape(type='line', x0=difference_data['Month'].min(), y0=0, x1=difference_data['Month'].max(), y1=0, line=dict(color='black', width=2))
+        fig.update_layout(xaxis_tickangle=-45, yaxis_title='Difference (Gains - Expenses)', title='Monthly Difference in Gains and Expenses')
+        st.plotly_chart(fig)
 
-        # Display the plot in Streamlit
-        st.pyplot(fig)
-
+    @display_method
     def display_expenses_for_month(self):
         # Use Streamlit's date_input to select a year and month
         selected_date = st.date_input("Select a year and month", value=pd.to_datetime("today"), min_value=None, max_value=None, key=None)
@@ -97,6 +103,7 @@ class Dashboard:
         efmd = ExpenseForMonthDisplay() 
         efmd.display_expenses_for_month(self.expense_analysis, year, month)
 
+    @display_method
     def display_monthly_expenses_by_category(self):
         st.header("Monthly Expenses by Category")
 
@@ -128,6 +135,7 @@ class Dashboard:
         st.subheader(f"Monthly Gains for {selected_category}")
         st.bar_chart(gains_data.set_index('Month'))
 
+    @display_method
     def display_detailed_transactions(self):
         st.header("Detailed Transactions")
 
@@ -188,6 +196,7 @@ class Dashboard:
         df = pd.DataFrame(data, columns=columns)
         st.table(df)
 
+    @display_method
     def display_invested_money_distribution(self):
         st.header("Invested Money Distribution")
         
@@ -203,6 +212,7 @@ class Dashboard:
         total_invested = investments_df['amount'].sum()
         st.markdown(f"**Total Amount Invested:** {total_invested:,.0f} NIS")
 
+    @display_method
     def display_projected_financials(self):
         st.header("Projected Financials")
 
