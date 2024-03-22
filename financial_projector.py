@@ -29,7 +29,8 @@ class FinancialProjector:
 
         return annualized_rate * 100  # Convert to percentile
 
-    def calculate_future_compounded_value(self, investment, years: int, annual_interest_rate: float):
+    @staticmethod
+    def calculate_future_compounded_value(investment, years: int, annual_interest_rate: float):
         from investements import Investement  # Import here if necessary for type hints  # noqa: F401
 
         # Check if the annual interest rate is zero and raise an exception if so
