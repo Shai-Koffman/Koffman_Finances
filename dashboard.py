@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from display_expense_for_month import ExpenseForMonthDisplay
 from expenses_processor import TransactionsAnalysis, AccountType
 from investements import InvestementProcessor
+from financial_projector import FinancialProjector
 
 
 class Dashboard:
@@ -20,7 +21,8 @@ class Dashboard:
             'display_expenses_for_month',
             'display_monthly_expenses_by_category',
             'display_detailed_transactions',
-            'display_invested_money_distribution'
+            'display_invested_money_distribution',
+            'display_projected_financials'
         ]
 
         # Sidebar menu for navigation, with "Monthly Expenses vs Gains" as the default selection
@@ -200,3 +202,99 @@ class Dashboard:
         # Calculate and display the total amount invested
         total_invested = investments_df['amount'].sum()
         st.markdown(f"**Total Amount Invested:** {total_invested:,.0f} NIS")
+
+    def display_projected_financials(self):
+        st.header("Projected Financials")
+
+        # Checkbox to exclude BANK_TRANSFERS_AND_MONEY_TRANSFERS
+        exclude_transfers = st.checkbox('Exclude money transfers')
+
+        # Calculate monthly expenses and gains, excluding bank transfers as specified
+        _, expenses_per_month = self.expense_analysis.bank_total_gains_and_expenses_per_month(exclude_transfers=exclude_transfers)
+
+        # Calculate the average monthly expenses
+        average_monthly_expenses = expenses_per_month.mean()
+
+        # Calculate the static annual expenses (average monthly expenses * 12) and display in a larger font inside a box
+        static_annual_expenses = (average_monthly_expenses * 12).round()
+        st.markdown(f"<div style='border: 2px solid #4CAF50; padding: 10px; font-size: 20px;'>Static Annual Expenses: {static_annual_expenses} NIS</div>", unsafe_allow_html=True)
+
+        # Fetch investment data as a list of Investement objects
+        investments = self.investements_processor.get_investement_list()
+        projected_investments = []
+
+        yearly_totals = {year: 0 for year in range(1, 11)}  # Initialize yearly totals
+        for investment in investments:
+            historical_annual_interest_rate = FinancialProjector.calculate_projected_historical_annual_interest_rate(investment)
+            for year in range(1, 11):
+                if historical_annual_interest_rate != 0:
+                    future_value = FinancialProjector.calculate_future_compounded_value(
+                        investment, year, historical_annual_interest_rate / 100)
+                else:
+                    future_value = investment.normalized_amount
+                projected_investments.append({
+                    'Investment Name': investment.name,
+                    'Year': year,
+                    'Projected Value': f"{future_value:,.0f}"
+                })
+                yearly_totals[year] += future_value  # Add to yearly total
+
+        # Store yearly totals separately
+        yearly_totals_rows = []
+        for year, total in yearly_totals.items():
+            yearly_totals_rows.append({
+                'Investment Name': 'Total for Year',
+                'Year': year,
+                'Projected Value': f"₪{total:,.0f}"
+            })
+
+        # Append yearly totals to projected_investments after all individual investments have been processed
+        projected_investments.extend(yearly_totals_rows)
+
+        projected_investments_df = pd.DataFrame(projected_investments)
+        st.subheader("Projected Investment Values for Next 10 Years")
+        pivoted_df = projected_investments_df.pivot(index='Investment Name', columns='Year', values='Projected Value')
+        st.dataframe(pivoted_df)
+
+        # Convert 'Projected Value' to numeric, ensuring errors are handled (e.g., set to NaN)
+        projected_investments_df['Projected Value'] = pd.to_numeric(projected_investments_df['Projected Value'].str.replace(',', ''), errors='coerce')
+
+        # Summing up 'Projected Value' for each year after conversion
+        total_projected_investments = projected_investments_df.groupby('Year')['Projected Value'].sum()
+
+        # Now perform the subtraction for 'Net Worth' using the static annual expenses
+        financial_projection = pd.DataFrame({
+            'Year': range(1, 11),
+            'Net Worth': total_projected_investments.values - static_annual_expenses
+        })
+
+        st.subheader("Projected Net Worth Over 10 Years (Current Growth rate)")
+        st.line_chart(financial_projection.set_index('Year'))
+
+        st.subheader("Projected Future Net Worth - With configuration")
+        # Allow users to choose the yearly interest rate in percentile
+        static_growth_rate = st.number_input("Choose Yearly Interest Rate in Percentile", value=8.0, min_value=0.0, max_value=100.0) / 100
+        initial_net_worth = sum([investment.normalized_amount for investment in self.investements_processor.get_investement_list()])
+        
+        # Allow users to override the monthly expenses
+        monthly_expenses_override = st.number_input("Override Monthly Expenses", value=static_annual_expenses / 12, format="%.2f")
+        static_annual_expenses = monthly_expenses_override * 12
+
+        years = range(1, 11)
+        net_worth_with_growth = []
+
+
+        for year in years:
+            # Compounded growth calculation for each year
+            net_worth_for_year = (initial_net_worth * ((1 + static_growth_rate) ** year)) - static_annual_expenses
+            net_worth_with_growth.append(net_worth_for_year)
+
+        # Create DataFrame for plotting
+        df_growth = pd.DataFrame({
+            'Year': list(years),
+            'Net Worth': net_worth_with_growth
+        })
+
+        # Plotting the line chart
+        st.line_chart(df_growth.set_index('Year'))
+

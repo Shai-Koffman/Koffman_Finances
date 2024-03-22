@@ -60,3 +60,6 @@ class InvestementProcessor:
             ],
         }
         return pd.DataFrame(investements_dict)
+    
+    def get_investement_list(self) -> list[Investement]:
+        return self.investements
