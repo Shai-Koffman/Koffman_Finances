@@ -76,7 +76,7 @@ Categorizations = [
             (Categories.WATER,['מיה','שטראוס','מים'] ),           
             (Categories.SUPER,['סופר הכיכר', 'סופר זול', 'מתחם 22','יוחננוף', 'אושר עד', 'שופרסל',  'עדיקה', 'מינימרקט ', 'חצי חינם','AM PM','AM:PM' ,'PM:AM', 'טיב טעם'],),
             (Categories.SCHOOLS,['דוארט','א.מ.ש.', 'LEAPLEARNER ', ' CBT', 'מכללת בית ברל'] ),
-            (Categories.RESTAURANTS_AND_HOTELS,['אדום בר בע"מ','מקדונלדס','אונמי','שירותי בר בארועים', 'פורטונה פיצה', 'ארקפה ', 'פיצה ביס', 'נונומימי'
+            (Categories.RESTAURANTS_AND_HOTELS,['קליאופטרה','NONO','אר קפה','אדום בר בע"מ','מקדונלדס','אונמי','שירותי בר בארועים', 'פורטונה פיצה', 'ארקפה ', 'פיצה ביס', 'נונומימי'
                                                 , 'מאפיית טלר', 'עידנס', 'בר אירי', 'חומוס ', 'ארומה ', 'בית רמות'
                                                 , 'שיפודי הנכדים', 'טופולופומפו', 'מייזון קייזר', 'קפה מתתיהו', 'קומבה'
                                                 , "ג'ירף ", 'שרון פיצה', 'זורבה', 'ארקפה ', ' לנדוור', 'דנון', 'מלון ים סוף'
@@ -85,7 +85,7 @@ Categorizations = [
                                                 , 'שגב ניהון', ' לב הפארק', 'נומי',  "ג'ונז פיצה ", 'חנדלה', 'לנדוור ', 'ברביץ', 'מיצי בשוק '
                                                 , "מקדונלד'ס", 'זוזוברה', 'שושנה', 'OMAM', 'אננדה']),
             (Categories.PRESENTS,['WL *STEAM PURCHASE','XOBELZZUP','טוילנד','AMZN MKTP ', 'צעצועון ', 'פאזלבוקס', 'PAYBOX', 'BUYME', 'CHICKIES'
-                                  , 'BIT', 'צומת ספרים', 'אייבורי', 'PAYBOX', ' STEAM','העברה בBIT'
+                                  , 'BIT', 'צומת ספרים', 'אייבורי', 'PAYBOX', ' STEAM','העברה בBIT', 'סקי פס סקי וסנובורד בע"מ'
                                   , 'כפר השעשועים', 'SMT', 'אימפריית הצעצועים','XOBYAP'] ),
             (Categories.OTHER_INSURANCE,['שירביט']),
             (Categories.CHECKS, ["שיק"]),
@@ -100,14 +100,14 @@ Categorizations = [
                                , 'סקארה', 'השואה', ' המכס', 'סיגר קלאב ', 'רשות הדואר-רכישת מוצר דאר', 'צחי ובנצי עיצוב שיער'] ),
             (Categories.ARNONA, ['עיריית הוד השרון', 'עירית הוד השרון']),
             (Categories.CAR_INSURANCE, ['כלמוביל', 'AIG', 'חובה', ' ביטוח ', 'הפניקס']),
-            (Categories.CAR_EXPENSES, ['אחוזת החוף מפעל הפיס','חניונים', 'חניה', 'רכבת', 'טעינת', 'פנגו', 'חניון', 'GETT', 'איתוראן', 'חניו', 'כביש 6', 'קאר', 'חניוני', 'הרכב','אי.וי.']),
+            (Categories.CAR_EXPENSES, ['דניאל פרקינג','אחוזת החוף מפעל הפיס','חניונים', 'חניה', 'רכבת', 'טעינת', 'פנגו', 'חניון', 'GETT', 'איתוראן', 'חניו', 'כביש 6', 'קאר', 'חניוני', 'הרכב','אי.וי.']),
             (Categories.HEALTH_INSURANCE, ['הראל חברה לב-י', 'הפניקס ביטוח', 'מגדל חיים', ' בריאות' ]),
             (Categories.OTHER_INSURANCE, ['הראל-ביטוח דירה',"פסגות", "מנורה ביטוח דירה"]),
             (Categories.GAS, ["סופרגז"]),
             (Categories.FUEL,['מכמורת', 'סונול', 'פז', 'דלק']),
             (Categories.INCOME_TAX, ['מס הכנסה']),
-            (Categories.HEALTH_AND_MACABI, ['נקודה בלב נתלי אלקובי','אופטיקה פרקש','מכבידנט', 'מכבי', 'רפואי', 'דראגסטורס', 'מדיקל', 'סופר פארם','רביע']),
-            (Categories.STARTUP,['GOOGLE HEX', 'GOOGLE STORAGE', 'CHATGPT', ' MEDIUM ', 'GOOGLE DEVSISTERS ', 'TOME.APP', 'CLOUD ', 'GITHUB', 'OPENAI '
+            (Categories.HEALTH_AND_MACABI, ['נקודה בלב נתלי אלקובי','אופטיקה פרקש','מכבידנט', 'מכבי', 'רפואי', 'דראגסטורס', 'מדיקל', 'סופר פארם','רביע','סופר-פארם','פנופארם']),
+            (Categories.STARTUP,['CURSOR','GOOGLE HEX', 'GOOGLE STORAGE', 'CHATGPT', ' MEDIUM ', 'GOOGLE DEVSISTERS ', 'TOME.APP', 'CLOUD ', 'GITHUB', 'OPENAI '
                                  , "גאדג'ט טים", 'CLOUD', 'MIDJOURNEY ', 'OPENAI', 'MICROSOFT*STORE ', 'CHATGPT', 'MICROSOFT*PC']),
             (Categories.HUGIM, ['קאנטרי', 'מחול', 'אולדרימס', 'שבט איתן', ' ספורט ', 'אנרגים', 'סטודיו']),
             
@@ -123,7 +123,7 @@ Categorizations = [
 
             (Categories.INTERNET_SERVICES_AND_SHOPPING, ["KINDLE","MARKETPLACE",'PAYPAL', 'WWW.ALIEXPRES','ALIEXPRESS',"WWW.ALIEXPRESS.COM","AMAZON", "AMZN", "GOOGLE", "amzn","SPOTIFYIL","NETFLIX.COM"]),
 
-            (Categories.FUN_AND_MOVIES, ['מקס ', 'ארץ ערבה', 'סטימצקי', 'קופת כרטיסים', ' סינמה' , ' צלילה', ' פינוקים ', 'מוזיאון ישראל', 'היכל התרבות', 'PUZZLEBOX', 'מלון השרון']),
+            (Categories.FUN_AND_MOVIES, ['זאפה','מקס ', 'ארץ ערבה', 'סטימצקי', 'קופת כרטיסים', ' סינמה' , ' צלילה', ' פינוקים ', 'מוזיאון ישראל', 'היכל התרבות', 'PUZZLEBOX', 'מלון השרון']),
             (Categories.ABROAD_EXPENSES,  ['STORE','SPORT & MODE ZANGERL','שקם דיוטי','AIRBNB', 'HERCULES GREEK', 'SEA LIFE', 'TIN BUILDING', 'HULK CART', 
                                            'CHILL-N', 'BREAD ALONE', 'CICCOLATITALIAN', 'AVIS', ' SUPERCENTER ',
                                            'MIGROSS', 'PRASINI', 'ITALMARK', 'RESTAURANT ALPTRIDA', 'GEMMA PIZZERIA', 'PIGASOS', '3505 PESCHIERA',
@@ -165,9 +165,11 @@ def get_category(company: str) -> Categories:
     
     for category, matches in Categorizations:
     
-        if any(match in company for match in matches):
-            return category
-    
+        try:
+            if any(match in company for match in matches):
+                return category
+        except TypeError:
+            print(f"Error processing company {company}")
     #save the company name a list of unique unknown companies
     if company not in unknown_companies:
         unknown_companies.append(company)
