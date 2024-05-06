@@ -12,7 +12,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--bank", ".data/bank_march23-march24.xls"],
+            "args": ["--bank", ".data/bank_jan23_april24.xls"],
             "env": {
                 "PYTHONIOENCODING": "utf-8"
             }
@@ -47,8 +47,8 @@
             "args": [
                 "run",
                 "koffman_financial_analysis.py","--",
-                "--bank", ".data/bank_march23-march24.xls",
-                 "-v", ".data/max_march23-march24.xlsx",
+                "--bank", ".data/bank_jan23_april24.xls",
+                 "-v", ".data/max_jan23_april24.xlsx",
                  "--investements", ".data/investements.json"
             ]
         },   

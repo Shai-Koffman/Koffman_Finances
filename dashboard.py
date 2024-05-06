@@ -1,9 +1,6 @@
 import plotly.graph_objects as go
 import streamlit as st
 import pandas as pd
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
 from display_expense_for_month import ExpenseForMonthDisplay
 from expenses_processor import TransactionsAnalysis, AccountType
 from investements import InvestementProcessor
