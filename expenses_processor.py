@@ -1,5 +1,5 @@
 from categories import Categories
-from transactions import BankTransaction,VisaMaxTransaction,Transaction
+from transactions import BankTransaction,VisaMaxTransaction,Transaction,IsracardTransaction
 from typing import List,Tuple
 from enum import Enum, auto
 import pandas as pd
@@ -7,13 +7,18 @@ import pandas as pd
 class AccountType(Enum):
     BANK = auto()
     VISA_MAX = auto()
+    ISRACARD = auto()
 
 class TransactionsAnalysis:
-    def __init__(self, bank_transactions: List[BankTransaction], visa_transactions: List[VisaMaxTransaction]):
+    def __init__(self, bank_transactions: List[BankTransaction],
+                       visa_transactions: List[VisaMaxTransaction],
+                       isracard_transactions: List[IsracardTransaction]):
         columns = ['date', 'category', 'expense', 'gains']
         # For bank expenses
         self.detailed_bank_transactions = bank_transactions
         self.detailed_visa_max_transactions = visa_transactions
+        self.detailed_isracard_transactions = isracard_transactions
+        
         self.bank_transactions_pd = pd.DataFrame([(exp.get_transaction_date(),
                                                exp.get_category(),
                                                exp.get_expense_sum(),
@@ -24,13 +29,18 @@ class TransactionsAnalysis:
                                                exp.get_expense_sum(),
                                                exp.get_gains_sum()) for exp in visa_transactions], columns=columns)
         
-        
+        self.isracard_transactions_pd = pd.DataFrame([(exp.get_transaction_date(),
+                                               exp.get_category(),
+                                               exp.get_expense_sum(),
+                                               exp.get_gains_sum()) for exp in isracard_transactions], columns=columns)
         
         # Also convert 'date' column to datetime for bank_expenses_pd and visa_expenses_pd, and set as index
         self.bank_transactions_pd['date'] = pd.to_datetime(self.bank_transactions_pd['date'])
         self.bank_transactions_pd.set_index('date', inplace=True)
         self.visa_max_transactions_pd['date'] = pd.to_datetime(self.visa_max_transactions_pd['date'])
         self.visa_max_transactions_pd.set_index('date', inplace=True)
+        self.isracard_transactions_pd['date'] = pd.to_datetime(self.isracard_transactions_pd['date'])
+        self.isracard_transactions_pd.set_index('date', inplace=True)
 
         
 
@@ -55,6 +65,15 @@ class TransactionsAnalysis:
         filtered_expenses = self.visa_max_transactions_pd[(visa_dates.year == year) & (visa_dates.month == month)]
         return filtered_expenses.groupby('category')['expense'].sum()
 
+    def isracard_monthly_gains(self, year: int, month: int) -> pd.Series:
+        isracard_dates = self.isracard_transactions_pd.index
+        filtered_gains = self.isracard_transactions_pd[(isracard_dates.year == year) & (isracard_dates.month == month)]
+        return filtered_gains.groupby('category')['gains'].sum()
+    
+    def isracard_monthly_expenses(self, year: int, month: int) -> pd.Series:
+        isracard_dates = self.isracard_transactions_pd.index
+        filtered_expenses = self.isracard_transactions_pd[(isracard_dates.year == year) & (isracard_dates.month == month)]
+        return filtered_expenses.groupby('category')['expense'].sum()
 
     #returns a tuple of DataFrame lists, one for bank gains total per month and one for bank expenses total per month.
     def bank_total_gains_and_expenses_per_month(self, exclude_transfers: bool) ->Tuple[pd.Series, pd.Series]:
@@ -78,16 +97,20 @@ class TransactionsAnalysis:
         # Combine categories from both bank and visa transactions, then remove duplicates
         bank_categories = self.bank_transactions_pd['category'].unique().tolist()
         visa_max_categories = self.visa_max_transactions_pd['category'].unique().tolist()
-        all_categories = list(set(bank_categories + visa_max_categories))
+        isracard_categories = self.isracard_transactions_pd['category'].unique().tolist()
+        all_categories = list(set(bank_categories + visa_max_categories + isracard_categories))
         all_categories.sort()  # Optional: sort the categories alphabetically
         return all_categories
 
     def get_monthly_expenses_and_gains_by_category(self, category: str, account_type: AccountType) -> Tuple[pd.DataFrame, pd.DataFrame]:
         transactions = pd.DataFrame()  # Initialize to an empty DataFrame to handle unexpected account_type values
-        if account_type == AccountType.BANK:
-            transactions = self.bank_transactions_pd[self.bank_transactions_pd['category'] == category]
-        elif account_type == AccountType.VISA_MAX:
-            transactions = self.visa_max_transactions_pd[self.visa_max_transactions_pd['category'] == category]
+        match account_type:
+            case AccountType.BANK:
+                transactions = self.bank_transactions_pd[self.bank_transactions_pd['category'] == category]
+            case AccountType.VISA_MAX:
+                transactions = self.visa_max_transactions_pd[self.visa_max_transactions_pd['category'] == category]
+            case AccountType.ISRACARD:
+                transactions = self.isracard_transactions_pd[self.isracard_transactions_pd['category'] == category]
      
         # Group by month and calculate total expenses and gains
         expenses_per_month = transactions.groupby(pd.Grouper(freq='ME'))['expense'].sum()
@@ -102,7 +125,12 @@ class TransactionsAnalysis:
         return expenses_per_month, gains_per_month
 
     def get_detailed_expenses(self, account_type: AccountType, year: int, month: int, category: str) -> List[Transaction]:
-        if account_type == AccountType.BANK:
-            return [transaction for transaction in self.detailed_bank_transactions if transaction.get_transaction_date().year == year and transaction.get_transaction_date().month == month and transaction.get_category() == category]
-        elif account_type == AccountType.VISA_MAX:
-            return [transaction for transaction in self.detailed_visa_max_transactions if transaction.get_transaction_date().year == year and transaction.get_transaction_date().month == month and transaction.get_category() == category]
+        def predicate(t):
+                    return t.get_transaction_date().year == year and t.get_transaction_date().month == month and t.get_category() == category
+        match account_type:
+            case AccountType.BANK:
+                return [transaction for transaction in self.detailed_bank_transactions if predicate(transaction)]
+            case AccountType.VISA_MAX:
+                return [transaction for transaction in self.detailed_visa_max_transactions if predicate(transaction)]
+            case AccountType.ISRACARD:
+                return [transaction for transaction in self.detailed_isracard_transactions if predicate(transaction)]

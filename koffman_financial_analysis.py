@@ -4,6 +4,7 @@ import argparse
 from investements import  InvestementProcessor, get_investement_list
 from leumi_bank_parser import parse_bank_file
 from max_visa_parser import parse_visa_max_file
+from isracard_parser import parse_isracard_dir
 from expenses_processor import TransactionsAnalysis
 from dashboard import Dashboard
 
@@ -14,6 +15,7 @@ def main():
     parser.add_argument('-b', '--bank', help='bank files', required=False )
     parser.add_argument('-v', '--visa_max', help='Visa MAX file', required=False)
     parser.add_argument('-i', '--investements', help='Investements file', required=False)
+    parser.add_argument('-is','--isracard',help="Isracard directory", required=False)
 
 
 
@@ -23,15 +25,19 @@ def main():
     visa_max_file = vars(args)["visa_max"]
     bank_file = vars(args)["bank"]
     investements_file = vars(args)["investements"]
+    isracard_dir = vars(args)["isracard"]
 
     visa_max_transactions = []
     bank_transactions = []
+    isracard_transactions = []
     if visa_max_file:
         visa_max_transactions += parse_visa_max_file(visa_max_file)   
     if bank_file:
         bank_transactions += parse_bank_file(bank_file)
+    if isracard_dir:
+        isracard_transactions += parse_isracard_dir(isracard_dir)
     
-    transaction_analysis = TransactionsAnalysis(bank_transactions, visa_max_transactions)
+    transaction_analysis = TransactionsAnalysis(bank_transactions, visa_max_transactions, isracard_transactions)
     investements_list = get_investement_list(investements_file)
     ip = InvestementProcessor(investements_list)
 

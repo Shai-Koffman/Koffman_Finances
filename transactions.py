@@ -87,3 +87,31 @@ class VisaMaxTransaction(Transaction):
         return self.gain_sum
 
 
+class IsracardTransaction(Transaction):
+    def __init__(self, date: datetime.datetime, company: str, category: Categories, expense: float):
+        self.date = date
+        self.company = company
+        self.expense = expense
+        self.category = category
+        self.gains = 0
+
+    def get_category(self) -> Categories:
+        return self.category
+    def get_transaction_date(self) -> datetime.datetime:
+        return self.date
+    def get_expense_sum(self) -> int:
+        return self.expense
+    def get_gains_sum(self) -> int:
+        return self.gains
+    
+    def __str__(self):
+        return ("Isracard Expense:\n"
+                "  date = {0}\n"
+                "  company = {1}\n"
+                "  category = {2}\n"
+                "  expense = {3}\n"
+                "  gains = {4}\n"
+                .format(self.date, self.company, self.category, self.expense, self.gains))
+    
+
+

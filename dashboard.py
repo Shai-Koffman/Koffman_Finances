@@ -109,9 +109,11 @@ class Dashboard:
         selected_category = st.selectbox("Select a Category", categories)
 
         # Radio buttons to choose between Bank or Visa
-        account_type = st.radio("Choose Account Type", ( 'Visa Max','Bank'))
+        account_type = st.radio("Choose Account Type", ( 'Visa Max','Bank', 'Isracard'))
         if account_type == 'Visa Max':
             account_type = AccountType.VISA_MAX
+        elif account_type == 'Isracard':
+            account_type = AccountType.ISRACARD
         else:
             account_type = AccountType.BANK
 
@@ -141,8 +143,12 @@ class Dashboard:
         selected_category = st.selectbox("Select a Category", categories)
 
         # Radio buttons to choose between Bank or Visa
-        account_type = st.radio("Choose Account Type", ('Bank', 'Visa Max'))
-        account_type_enum = AccountType.VISA_MAX if account_type == 'Visa Max' else AccountType.BANK
+        account_type = st.radio("Choose Account Type", ('Bank', 'Visa Max', 'Isracard'))
+        account_type_enum = {
+            'Bank': AccountType.BANK,
+            'Visa Max': AccountType.VISA_MAX,
+            'Isracard': AccountType.ISRACARD
+        }[account_type]
 
         # Use Streamlit's date_input to select a year and month
         selected_date = st.date_input("Select a year and month", value=pd.to_datetime("today"))
@@ -188,6 +194,16 @@ class Dashboard:
                     'Visa Card Number', 'Coin Type', 'Normalized Expense Sum', 
                     'Visa Max Category', 'Sheet Title'
                 ]
+            case AccountType.ISRACARD:
+                for transaction in detailed_transactions:
+                    data.append([
+                        transaction.get_transaction_date().strftime('%Y-%m-%d'),
+                        transaction.get_category().name,
+                        transaction.get_expense_sum(),
+                        transaction.get_gains_sum(),
+                        transaction.company
+                    ])
+                columns = ['Date', 'Category', 'Expense Sum', 'Gains Sum', 'Company']
 
         # Displaying transactions in a table
         df = pd.DataFrame(data, columns=columns)

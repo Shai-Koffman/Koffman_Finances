@@ -74,4 +74,39 @@ class ExpenseForMonthDisplay:
             st.markdown(visa_max_gains_table, unsafe_allow_html=True)
         else:
             st.write("No Visa Max gains for this month.")
+        
+            # Isracard expenses and gains
+        st.subheader("Isracard Expenses and Gains")
+        isracard_expenses = expense_analysis.isracard_monthly_expenses(year, month).round().astype(int)
+        isracard_gains = expense_analysis.isracard_monthly_gains(year, month).round().astype(int)
+
+        # Filter out 0 expenses and gains, then sort in descending order
+        isracard_expenses = isracard_expenses[isracard_expenses > 0].sort_values(ascending=False)
+        isracard_gains = isracard_gains[isracard_gains > 0].sort_values(ascending=False)
+
+        # Display Isracard expenses with Shekel sign in a table using Markdown
+        if not isracard_expenses.empty:
+            st.write("Isracard Expenses:")
+            isracard_expenses_table = "<table><tr><th>Category</th><th>Expense</th></tr>"
+            isracard_expenses_table += "\n".join([f"<tr><td>{category}</td><td>₪{expense:,}</td></tr>" for category, expense in isracard_expenses.items()])
+            # Calculate and append the total row
+            total_isracard_expenses = isracard_expenses.sum()
+            isracard_expenses_table += f"<tr style='font-weight: bold;'><td>Total</td><td>₪{total_isracard_expenses:,}</td></tr>"
+            isracard_expenses_table += "</table>"
+            st.markdown(isracard_expenses_table, unsafe_allow_html=True)
+        else:
+            st.write("No Isracard expenses for this month.")
+
+        # Display Isracard gains with Shekel sign in a table using Markdown
+        if not isracard_gains.empty:
+            st.write("Isracard Gains:")
+            isracard_gains_table = "<table><tr><th>Category</th><th>Gains</th></tr>"
+            isracard_gains_table += "\n".join([f"<tr><td>{category}</td><td>₪{gains:,}</td></tr>" for category, gains in isracard_gains.items()])
+            # Calculate and append the total row
+            total_isracard_gains = isracard_gains.sum()
+            isracard_gains_table += f"<tr style='font-weight: bold;'><td>Total</td><td>₪{total_isracard_gains:,}</td></tr>"
+            isracard_gains_table += "</table>"
+            st.markdown(isracard_gains_table, unsafe_allow_html=True)
+        else:
+            st.write("No Isracard gains for this month.")
 
