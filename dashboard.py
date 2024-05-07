@@ -5,6 +5,8 @@ from display_expense_for_month import ExpenseForMonthDisplay
 from expenses_processor import TransactionsAnalysis, AccountType
 from investements import InvestementProcessor
 from financial_projector import FinancialProjector
+import matplotlib.pyplot as plt
+from categories import Categories
 
 
 class Dashboard:
@@ -103,35 +105,70 @@ class Dashboard:
     @display_method
     def display_monthly_expenses_by_category(self):
         st.header("Monthly Expenses by Category")
+        # Fetching expenses data for all categories across all account types
+        all_categories = self.expense_analysis.get_categories()
+        exclude_transfers = st.checkbox("Exclude money transfers", value=False)
+        if exclude_transfers:
+            all_categories = [category for category in all_categories if category != Categories.BANK_TRANSFERS_AND_MONEY_TRANSFERS]
+        
+        exclude_visas= st.checkbox("Exclude visas", value=False)
+        if exclude_visas:
+            all_categories = [category for category in all_categories if (category != Categories.VISA_MAX)]
+            all_categories = [category for category in all_categories if (category != Categories.ISRACARD)]
+
+        total_expenses_per_category = pd.Series(dtype=float)
+        for category in all_categories:
+            bank_expenses, _ = self.expense_analysis.get_monthly_expenses_and_gains_by_category(category, AccountType.BANK)
+            visa_max_expenses, _ = self.expense_analysis.get_monthly_expenses_and_gains_by_category(category, AccountType.VISA_MAX)
+            isracard_expenses, _ = self.expense_analysis.get_monthly_expenses_and_gains_by_category(category, AccountType.ISRACARD)
+            # Sum expenses for each category across all account types
+            total_category_expenses = bank_expenses.add(visa_max_expenses, fill_value=0).add(isracard_expenses, fill_value=0)
+            # Save the sum of expenses for each month
+            total_expenses_per_category[category] = total_category_expenses.sum()
+            # Save the number of months with expenses to calculate the average correctly later
+            months_with_expenses = total_category_expenses.count()
+            total_expenses_per_category[f"{category}_months"] = months_with_expenses
+        # Calculate average monthly expenses per category
+        avg_monthly_expenses_per_category = pd.Series({category: total_expenses_per_category[category] / total_expenses_per_category[f"{category}_months"] for category in all_categories})
+
+        # Plotting the pie chart for average monthly expenses per category
+        fig, ax = plt.subplots()
+        avg_monthly_expenses_per_category.plot(kind='pie', ax=ax, autopct='%1.1f%%', startangle=90)
+        ax.set_ylabel('')  # Remove the y-label as it's unnecessary for pie charts
+        ax.set_title('Average Monthly Expenses Per Category')
+        st.pyplot(fig)
 
         # Dropdown to select category
         categories = self.expense_analysis.get_categories()  # Assuming this method exists and returns a list of categories
         selected_category = st.selectbox("Select a Category", categories)
 
-        # Radio buttons to choose between Bank or Visa
-        account_type = st.radio("Choose Account Type", ( 'Visa Max','Bank', 'Isracard'))
-        if account_type == 'Visa Max':
-            account_type = AccountType.VISA_MAX
-        elif account_type == 'Isracard':
-            account_type = AccountType.ISRACARD
-        else:
-            account_type = AccountType.BANK
+        # Fetching expenses and gains data for the selected category across all account types
+        bank_expenses, bank_gains = self.expense_analysis.get_monthly_expenses_and_gains_by_category(selected_category, AccountType.BANK)
+        visa_max_expenses, visa_max_gains = self.expense_analysis.get_monthly_expenses_and_gains_by_category(selected_category, AccountType.VISA_MAX)
+        isracard_expenses, isracard_gains = self.expense_analysis.get_monthly_expenses_and_gains_by_category(selected_category, AccountType.ISRACARD)
 
-        # Fetching expenses and gains data for the selected category and account type
-        expenses_per_month, gains_per_month = self.expense_analysis.get_monthly_expenses_and_gains_by_category(selected_category, account_type)
+        # Combine data from all account types
+        all_expenses = bank_expenses.add(visa_max_expenses, fill_value=0).add(isracard_expenses, fill_value=0)
+        all_gains = bank_gains.add(visa_max_gains, fill_value=0).add(isracard_gains, fill_value=0)
+
+        # Create a common date range for both gains and expenses
+        all_dates = all_expenses.index.union(all_gains.index)
+        # Reindex gains and expenses to the common date range and fill missing values with 0
+        all_expenses = all_expenses.reindex(all_dates, fill_value=0)
+        all_gains = all_gains.reindex(all_dates, fill_value=0)
 
         # Expenses Data
-        expenses_data = pd.DataFrame({'Month': expenses_per_month.index, 'Expenses': expenses_per_month.values})
+        expenses_data = pd.DataFrame({'Month': all_expenses.index, 'Expenses': all_expenses.values})
         expenses_data['Month'] = pd.to_datetime(expenses_data['Month']).dt.strftime('%Y-%m')
         expenses_data.sort_values(by='Month', inplace=True)
-        st.subheader(f"Monthly Expenses for {selected_category}")
+        st.subheader(f"Total Monthly Expenses for {selected_category}")
         st.bar_chart(expenses_data.set_index('Month'))
 
         # Gains Data
-        gains_data = pd.DataFrame({'Month': gains_per_month.index, 'Gains': gains_per_month.values})
+        gains_data = pd.DataFrame({'Month': all_gains.index, 'Gains': all_gains.values})
         gains_data['Month'] = pd.to_datetime(gains_data['Month']).dt.strftime('%Y-%m')
         gains_data.sort_values(by='Month', inplace=True)
-        st.subheader(f"Monthly Gains for {selected_category}")
+        st.subheader(f"Total Monthly Gains for {selected_category}")
         st.bar_chart(gains_data.set_index('Month'))
 
     @display_method
