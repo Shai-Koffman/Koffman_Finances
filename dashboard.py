@@ -7,7 +7,7 @@ from investements import InvestementProcessor
 from financial_projector import FinancialProjector
 import matplotlib.pyplot as plt
 from categories import Categories
-
+import plotly.express as px
 
 class Dashboard:
     def __init__(self, expense_analysis: TransactionsAnalysis, investements_processor: InvestementProcessor):
@@ -107,15 +107,7 @@ class Dashboard:
         st.header("Monthly Expenses by Category")
         # Fetching expenses data for all categories across all account types
         all_categories = self.expense_analysis.get_categories()
-        exclude_transfers = st.checkbox("Exclude money transfers", value=False)
-        if exclude_transfers:
-            all_categories = [category for category in all_categories if category != Categories.BANK_TRANSFERS_AND_MONEY_TRANSFERS]
-        
-        exclude_visas= st.checkbox("Exclude visas", value=False)
-        if exclude_visas:
-            all_categories = [category for category in all_categories if (category != Categories.VISA_MAX)]
-            all_categories = [category for category in all_categories if (category != Categories.ISRACARD)]
-
+      
         total_expenses_per_category = pd.Series(dtype=float)
         for category in all_categories:
             bank_expenses, _ = self.expense_analysis.get_monthly_expenses_and_gains_by_category(category, AccountType.BANK)
@@ -131,13 +123,20 @@ class Dashboard:
         # Calculate average monthly expenses per category
         avg_monthly_expenses_per_category = pd.Series({category: total_expenses_per_category[category] / total_expenses_per_category[f"{category}_months"] for category in all_categories})
 
-        # Plotting the pie chart for average monthly expenses per category
-        fig, ax = plt.subplots()
-        avg_monthly_expenses_per_category.plot(kind='pie', ax=ax, autopct='%1.1f%%', startangle=90)
-        ax.set_ylabel('')  # Remove the y-label as it's unnecessary for pie charts
-        ax.set_title('Average Monthly Expenses Per Category')
-        st.pyplot(fig)
+        # Improved plotting of the pie chart for average monthly expenses per category with better label management using Plotly
+        category_names = [category.to_string() for category in avg_monthly_expenses_per_category.index]
+        fig = px.pie(
+            avg_monthly_expenses_per_category,
+            values=avg_monthly_expenses_per_category.values,
+            names=category_names,
+            title='Average Monthly Expenses Per Category',
+            color_discrete_sequence=px.colors.qualitative.Set3  # This is a built-in color sequence, but you can customize it
+        )
 
+        fig.update_traces(textposition='inside', textinfo='percent+label')
+        fig.update_layout(showlegend=True)
+
+        st.plotly_chart(fig, use_container_width=True)
         # Dropdown to select category
         categories = self.expense_analysis.get_categories()  # Assuming this method exists and returns a list of categories
         selected_category = st.selectbox("Select a Category", categories)

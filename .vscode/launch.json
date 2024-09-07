@@ -47,8 +47,8 @@
             "args": [
                 "run",
                 "koffman_financial_analysis.py","--",
-                "--bank", ".data/bank_jan23_april24.xls",
-                 "-v", ".data/max_jan23_april24.xlsx",
+                "--bank", ".data/bank_August23_August24.xls",
+                 "-v", ".data/max_August23_August24.xlsx",
                  "--investements", ".data/investements.json",
                  "--isracard", ".data/isracard"
             ]
