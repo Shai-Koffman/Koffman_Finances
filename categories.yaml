@@ -133,6 +133,7 @@ RESTAURANTS_AND_HOTELS:
 - אננדה
 - גפניקה  סושי הברזל
 - טאטי שרונה
+- מסעדת סנטה - עברי
 PRESENTS:
 - WL *STEAM PURCHASE
 - XOBELZZUP
@@ -213,6 +214,8 @@ OTHER_FOOD:
 - 'חלאתי  '
 - 'פפה '
 - גלידוש
+- גילי קופי האוס בע"מ
+- אומנות הסושי בע"מ
 INTERNET_AND_PHONES:
 - DISNEY
 - טלזר 019 שירותי תקשו
@@ -315,6 +318,7 @@ HEALTH_AND_MACABI:
 - רביע
 - סופר-פארם
 - פנופארם
+- ד"ר עופר מור  בע"מ
 STARTUP:
 - CURSOR
 - GOOGLE HEX
@@ -403,6 +407,9 @@ HOME_RELATED:
 - סנט- הייר
 - קיי אס פי
 - עולם הכלים בע"מ
+- הפינה
+- TAKE IT
+- בוטיק קרמיק בע"מ
 INTERNET_SERVICES_AND_SHOPPING:
 - KINDLE
 - MARKETPLACE
@@ -595,3 +602,5 @@ ABROAD_EXPENSES:
 - PINOTSI
 - CELIO 6332
 - WORLD8.CO.IL
+UNKNOWN:
+- DS מתחם G
